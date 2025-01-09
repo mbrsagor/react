@@ -1,0 +1,352 @@
+//@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap');
+body {
+    font-family: "DM Serif Text", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+$primary_color: #1A434E;
+$black_color: #000000;
+$default_text_color: #FFFFFF;
+$default_border_color: #F2F2F2;
+$sub_title_color: #888888;
+$menu_color: #D3D3D3;
+
+.w100{
+    width: 100% !important;
+}
+
+.no_padding {
+    padding: 0 !important;
+}
+
+.mt5 {
+    margin-top: 25px !important;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.mt15 {
+    margin-top: 15px !important;
+}
+
+.marginCheckbox {
+    margin: 10px 8px 5px 6px !important;
+}
+
+.react-tel-input .form-control {
+    width: 100% !important;
+    padding: 0 70px !important;
+    height: 55px !important;
+    border-radius: 15px !important;
+}
+
+.text-center {
+    text-align: center;
+}
+.custom-select .MuiOutlinedInput-notchedOutline {
+  border-radius: 15px !important;
+}
+.custom-select .MuiSelect-select {
+  border-radius: 15px !important;
+}
+
+.modal-content *:focus {
+  outline: none !important;
+}
+
+/*======================
+    Bottom navigation css
+=======================*/
+.navigation_bar_sec {
+    img {
+        margin-bottom: 5px !important;
+        color: $menu_color !important;
+    }
+    span {
+        padding-bottom: 30px !important;
+    }
+}
+
+.css-1kcvi62-MuiBottomNavigationAction-label.Mui-selected {
+    color: $primary_color !important;
+     img {
+        color: $primary_color !important;
+    }
+}
+
+.css-1u1xzjx-MuiBottomNavigation-root .MuiBottomNavigationAction-root {
+    color: $menu_color !important;
+}
+
+/*======================
+    common page styling
+=======================*/
+.content {
+    max-width: 375px;
+    margin: 0 auto;
+    // padding: 10px;
+}
+
+// this css use for public route
+.outer_content {
+    max-width: 375px;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.bottom_app_bar_sec {
+    max-width: 375px;
+    margin: 0 auto;
+    z-index: 999;
+}
+
+.reset_password_text {
+    font-weight: 700 !important;
+    font-size: 12px !important;
+}
+
+.reset_pass_sec {
+    margin-top: 15px;
+}
+
+.css-5c1adp-MuiContainer-root {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.custom_text_color {
+    color: $primary_color;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.otp_section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    max-width: 220px;
+    margin: auto;
+    .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
+        padding: 11px 8px !important;
+    }
+    .css-quhxjy-MuiInputBase-root-MuiOutlinedInput-root {
+        border-radius: 8px;
+    }
+}
+
+.title_sign_in {
+    font-weight: 600;
+}
+
+.phn_num_otp_text {
+    font-size: 14px !important;
+    color: $sub_title_color;
+    font-weight: 500;
+}
+
+.trams_condition_link {
+    color: $black_color !important;
+    font-weight: 600;
+    position: relative;
+    top: 3px;
+    right: 8px;
+    :hover {
+        text-decoration: none !important;
+    }
+}
+
+.trams_condition_sec_checkbox {
+    color: $sub_title_color !important;
+}
+/*======================
+   PhoneInput customization
+=======================*/
+
+.react-tel-input .selected-flag {
+    width: 55px !important;
+    padding: 0 0 0 15px !important;
+}
+
+.react-tel-input .flag-dropdown {
+    border-radius: 15px 0 0 15px !important;
+    background: transparent !important;
+    border: 1px solid #CACACA !important;
+}
+
+.react-tel-input .selected-flag:hover, .react-tel-input .selected-flag:focus {
+    background: transparent !important;
+}
+
+.react-tel-input .flag-dropdown.open .selected-flag {
+    border-radius: 15px 0 0 15px !important;
+    background: transparent !important;
+}
+
+.react-tel-input .country-list .search-box {
+    margin-left: 0 !important;
+    width: 95% !important;
+    height: 40px !important;
+    // padding: 10px 0 6px 0px !important;
+}
+
+.react-tel-input .country-list .country {
+    text-align: left !important;
+    margin: 10px 20px;
+    border-bottom: 1px solid #CACACA;
+    padding: 3px;
+}
+
+.react-tel-input .country-list {
+    width: 300px !important;
+    max-height: 400px !important;
+    top: -11px
+}
+
+.search-emoji {
+    display: none;
+}
+
+/*======================
+   Password customization
+=======================*/
+
+.custom_password_field {
+    border-radius: 15px !important;
+}
+
+.header_headline {
+    font-weight: 600;
+    color: $primary_color;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+.forgot_password_title {
+    color: $primary_color;
+    font-weight: 600 !important;
+}
+
+.mt20 {
+    margin-top: 20px;
+}
+
+.custom_btn {
+    background: $primary_color !important;
+}
+
+.otp_privacy_text {
+    font-size: 13px;
+    font-style: italic;
+}
+
+// common auth button style
+.auth_btn {
+    background: $primary_color !important;
+    text-transform: capitalize !important;
+    margin-top: 10px !important;
+    height: 50px;
+    border-radius: 15px !important;
+    font-weight: 800 !important;
+}
+
+.app_bar {
+    background: $primary_color !important;
+}
+
+.signInContent {
+    text-align: center;
+    .forgot_pass {
+        font-size: 13px;
+        font-weight: 600;
+        color: $primary_color !important;
+        max-width: 150px;
+        margin: auto;
+        cursor: pointer;
+    }
+    .signInBottomSec {
+        margin-top: 15px;
+    }
+}
+
+.have_an_account {
+    color: #8c8787;
+    font-weight: 400;
+    font-size: 12px !important;
+}
+
+.css-b7dj7n-MuiList-root {
+    border-left: 1px solid $default_border_color;
+    border-right: 1px solid $default_border_color;
+}
+
+.app_bg {
+    color: $primary_color !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 1px solid $default_border_color;
+}
+
+.parent_sec {
+    background: $primary_color !important;
+    height: 90vh;
+}
+
+.child_sec {
+    color: $default_text_color !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/*======================
+    Header & Toolbar
+=======================*/
+.header_top_section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.css-1ygil4i-MuiToolbar-root {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+/*======================
+    404 page
+=======================*/
+.page_404{ 
+    padding:40px 0; 
+    background:$default_text_color; 
+    font-family: 'Arvo', serif;
+    img{ width:100%;}
+    .four_zero_four_bg{
+        background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+        height: 400px;
+        background-position: center;
+    }
+ 
+    .four_zero_four_bg h1{
+        font-size:80px;
+    }
+ 
+    .four_zero_four_bg h3 {
+        font-size:80px;
+    }
+			 
+    .link_404{			 
+        color: $default_text_color!important;
+        padding: 10px 20px;
+        background: $primary_color;
+        margin: 20px 0;
+        display: inline-block
+    }
+    
+    .content_box_404{margin-top:-50px;}
+}
