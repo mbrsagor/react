@@ -24,10 +24,10 @@ export default function App() {
         {/* private route */}
         <Route path="/" element={<Layout />}>
           <Route path="/home" element={<ProtectedRoute> <Dashboard /></ProtectedRoute>}/>
-          <Route path="skeleton" element={<AnimationSkeleton />} />
-          <Route path="events" element={<EventListPage />} />
-          <Route path="guard" element={<Guard />} />
-          <Route path="sponsor" element={<Sponsor />} />
+          <Route path="/skeleton" element={<ProtectedRoute> <AnimationSkeleton /></ProtectedRoute>}/>
+          <Route path="/events" element={<ProtectedRoute> <EventListPage /></ProtectedRoute>}/>
+          <Route path="/guard" element={<ProtectedRoute> <Guard /></ProtectedRoute>}/>
+          <Route path="/sponsor" element={<ProtectedRoute> <Sponsor /></ProtectedRoute>}/>
         </Route>
         {/* public route */}
         <Route path="signin" element={<SignIn />} />
