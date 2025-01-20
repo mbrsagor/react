@@ -18,7 +18,7 @@ const UserCard = ({ label, onClick, isSelected }) => {
         borderRadius: "15px",
         padding: 2,
         width: "fill-available",
-        marginBottom: 2,
+        // marginBottom: 1,
         cursor: "pointer",
         backgroundColor: isSelected ? "" : "inherit",
         "&:hover": { borderColor: "" },
@@ -98,6 +98,8 @@ export default function UserType() {
               onClick={() => setSelectedType("Host")}
               isSelected={selectedType === "Host"}
             />
+          </Box>
+          <Box className="mt6">
             <UserCard
               label="Sponsor"
               onClick={() => setSelectedType("Sponsor")}

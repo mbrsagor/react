@@ -9,6 +9,8 @@ import Checkbox from "@mui/joy/Checkbox";
 import Link from "@mui/joy/Link";
 import PhoneNumber from "../../components/phoneNumber";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import CustomSnackbar from "../../components/snackbar";
+import CustomLoader from "../../components/customLoader";
 import { sentOTP } from "./../../services/api_service";
 
 import axios from "axios";
@@ -18,6 +20,16 @@ const SendOTP = () => {
 
   const [phone, setPhone] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -31,13 +43,27 @@ const SendOTP = () => {
         phone: phone, // Payload sent to the backend
       });
       if (response.status == 200) {
-        console.log(response.data.message);
-        navigate("/verify-otp", {state: phone});
+        navigate("/verify-otp", { state: phone });
+        setSnackbar({
+          open: true,
+          message: response.data.message,
+          severity: "success",
+        });
       } else {
-        console.log("Failed to send OTP.");
+        setSnackbar({
+          open: true,
+          message: response.data.message,
+          severity: "error",
+        });
       }
     } catch (err) {
-      console.log(err.response?.data?.message || "Something went wrong.");
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.message || "Something went wrong.",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,6 +110,7 @@ const SendOTP = () => {
                 Trams & Conditions
               </Link>
             </Box>
+            {loading && <CustomLoader />}
             <Button
               type="submit"
               className="auth_btn w100"
@@ -91,15 +118,25 @@ const SendOTP = () => {
               disabled={!isChecked}
               sx={{
                 backgroundColor: isChecked ? "primary.main" : "#E4E3E4",
-                color: isChecked ? "white" : "#EFEEEF",
+                color: isChecked ? "white" : "black",
                 "&:hover": {
                   backgroundColor: isChecked ? "primary.dark" : "#E4E3E4",
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: "#E4E3E4 !important",
+                  color: "#ffffff",
                 },
               }}
             >
               Continue
             </Button>
           </form>
+          <CustomSnackbar
+            open={snackbar.open}
+            message={snackbar.message}
+            severity={snackbar.severity}
+            onClose={handleSnackbarClose}
+          />
         </Box>
       </Container>
     </React.Fragment>

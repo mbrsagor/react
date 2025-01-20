@@ -2,19 +2,21 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "./services/ProtectedRoute";
-import Dashboard from "./pages/dashboard/dashboard";
+import Homepage from "./pages/home/home";
 import SignIn from "./pages/signin/signin";
 import SignUp from "./pages/signup/signup";
 import SponsorSignUp from "./pages/signup/sponsorSignUp";
 import SendOTP from "./pages/otp/sendOTP";
 import VerifyOTP from "./pages/otp/verifyOTP";
 import UserType from "./pages/type/userType";
-import AnimationSkeleton from './components/skeleton'
 import Layout from "./components/layout";
 import NotFound from "./pages/error/not_found";
 import Sponsor from "./pages/sponsor/sponsor";
 import Guard from "./pages/guard/guard";
-import EventListPage from "./pages/event/event_list_page";
+import Profile from "./pages/profile/profile";
+import EventListPage from "./pages/event/event_lv/event_list_page";
+import EventDetails from "./pages/event/event_details/event_detail";
+import CreateEvent from "./pages/event/createEvent";
 import ChangePassword from "./pages/signin/change_password/changePassword";
 
 export default function App() {
@@ -23,11 +25,13 @@ export default function App() {
       <Routes>
         {/* private route */}
         <Route path="/" element={<Layout />}>
-          <Route path="/home" element={<ProtectedRoute> <Dashboard /></ProtectedRoute>}/>
-          <Route path="/skeleton" element={<ProtectedRoute> <AnimationSkeleton /></ProtectedRoute>}/>
+          <Route path="/home" element={<ProtectedRoute> <Homepage /></ProtectedRoute>}/>
+          <Route path="/create-event" element={<ProtectedRoute> <CreateEvent /></ProtectedRoute>}/>
           <Route path="/events" element={<ProtectedRoute> <EventListPage /></ProtectedRoute>}/>
-          <Route path="/guard" element={<ProtectedRoute> <Guard /></ProtectedRoute>}/>
-          <Route path="/sponsor" element={<ProtectedRoute> <Sponsor /></ProtectedRoute>}/>
+          <Route path="/event/:id" element={<ProtectedRoute> <EventDetails /></ProtectedRoute>}/>
+          <Route path="profile" element={<Profile />} />
+          <Route path="guard" element={<Guard />} />
+          <Route path="sponsor" element={<Sponsor />} />
         </Route>
         {/* public route */}
         <Route path="signin" element={<SignIn />} />

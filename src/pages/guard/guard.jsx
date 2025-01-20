@@ -1,27 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import ToolsBar from "../../components/tools_bar";
+import BottomMenuModal from "../../components/bottom_modal";
+
 export default function Guard() {
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <Container className="content">
+        <ToolsBar
+          open={modalOpen}
+          onClose={handleClose}
+          handleOpen={handleOpen}
+          link="/home"
+          title="Guard"
+        />
         <Box className="parent_sec">
-          <Card className="child_sec">
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Host page
-              </Typography>
-              <Typography variant="body2" component="p">
-                This is a page for host app.
-              </Typography>
-            </CardContent>
-          </Card>
+          <Typography className="no_data_text" variant="body">
+            No Data Available
+          </Typography>
+          <BottomMenuModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)} // Close the modal
+          />
         </Box>
       </Container>
     </React.Fragment>

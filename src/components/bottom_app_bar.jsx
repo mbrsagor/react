@@ -25,22 +25,23 @@ export default function FixedBottomNavigation() {
 
   return (
     //<Container className="bottom_app_bar_sec">
-    <Container>
+    <Container className="content">
       <CssBaseline />
       <Paper
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          zIndex: 999,
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "5px",
-          maxWidth: "375px", // Ensures the max width is 375px
-          width: "100%", // Ensures it spans full width of the container
-          boxSizing: "border-box", // Ensures padding is included in the width calculation
-          //minHeight: "60px", // Ensures
-        }}
-        elevation={3}
+        className="paper_border"
+        // className="content"
+        // sx={{
+        //   // position: "fixed",
+        //   // bottom: 0,
+        //   zIndex: 999,
+        //   //left: "50%",
+        //   //transform: "translateX(-50%)",
+        //   padding: "5px",
+        //   //maxWidth: "375px", // Ensures the max width is 375px
+        //   width: "100%", // Ensures it spans full width of the container
+        //   boxSizing: "border-box", // Ensures padding is included in the width calculation
+        // }}
+        elevation={0}
       >
         <BottomNavigation
           value={value}
@@ -50,7 +51,7 @@ export default function FixedBottomNavigation() {
             padding: "0",
             "& .MuiBottomNavigationAction-root": {
               minWidth: "auto",
-              padding: "42px 8px",
+              padding: "50px 8px",
             },
           }}
         >
@@ -137,7 +138,7 @@ export default function FixedBottomNavigation() {
                 style={{ width: 24, height: 24 }}
               />
             }
-            onClick={() => handleNavigation("/skeleton", 4)}
+            onClick={() => handleNavigation("/profile", 4)}
           />
         </BottomNavigation>
       </Paper>

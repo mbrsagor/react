@@ -15,7 +15,7 @@ export default function AnimationSkeleton() {
         <CssBaseline />
         <Container className="content">
           <Stack>
-            <Card style={{height:'85vh'}} variant="outlined">
+            <Card style={{height:'70vh'}} variant="outlined">
               <CardContent orientation="horizontal">
                 <Skeleton
                   animation="wave"

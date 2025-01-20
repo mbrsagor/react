@@ -7,7 +7,8 @@ import Container from "@mui/material/Container";
 import ToolsBar from "../../components/tools_bar";
 import BottomMenuModal from "../../components/bottom_modal";
 
-export default function Sponsor() {
+export default function Profile() {
+
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -22,7 +23,7 @@ export default function Sponsor() {
           onClose={handleClose}
           handleOpen={handleOpen}
           link="/home"
-          title="Sponsor"
+          title="Profile"
         />
         <Box className="parent_sec">
           <Typography className="no_data_text" variant="body">

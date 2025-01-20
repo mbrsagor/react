@@ -3,7 +3,9 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
+import ProfilePic from "../assets/avatar.png";
 
 
 function ResponsiveAppBar() {
@@ -18,16 +20,25 @@ function ResponsiveAppBar() {
 
 
   return (
-    <AppBar className="app_bg" position="static">
-      <Container className="content">
+    <Container className="content">
+      <AppBar className="app_bg" position="static">
         <Toolbar className="header_top_section">
-          <Typography variant="h6">
-            {userData.fullname ? userData.fullname : "Anonymous user"}
-          </Typography>
-          <Avatar alt={userData.fullname} src="/static/images/avatar/2.jpg" />
+          <Box>
+            <Typography className="header_wlc_text" variant="p">
+              Welcome
+            </Typography>
+            <Typography className="user_name" variant="h6">
+              {userData.fullname ? userData.fullname : "Anonymous user"}
+            </Typography>
+          </Box>
+          <Avatar
+            alt={userData.fullname}
+            src={ProfilePic}
+            sx={{ width: 60, height: 60 }}
+          />
         </Toolbar>
-      </Container>
-    </AppBar>
+      </AppBar>
+    </Container>
   );
 }
 export default ResponsiveAppBar;
