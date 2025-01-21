@@ -1,36 +1,160 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import { TextField, Button } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-import FileDropZone from "../../components/dropzone";
+import axios from "../../../services/axiosConfig";
+import FileDropZone from "../../../components/dropzone";
+import CustomLoader from "../../../components/customLoader";
+import CustomSnackbar from "../../../components/snackbar";
+import { MyEvents, MyCategories, MyPackages, MyTicketPrice} from "../../../services/api_service";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export default function EventForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [category, setCategory] = useState("");
-  const [packages, setPackages] = useState("");
-  const [dob, setDob] = useState(null);
+  const [category, setCategory] = useState([]); // Initialize as an array
+  const [selectedCategory, setSelectedCategory] = useState(""); // For the selected value
+  const [prices, setPrices] = useState([]);
+  const [packages, setPackages] = useState([]);
+  const [priceOptions, setPriceOptions] = useState([]); // To store fetched packages
+  const [packageOptions, setPackageOptions] = useState([]); // To store fetched packages
+  const [thumbnail, setThumbnail] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [start_date, setStartDate] = useState(null);
+  const [end_date, setSEndDate] = useState(null);
+
+  // messages
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+
+
+  // Snackbar
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  useEffect(() => {
+    // Get my all categories options
+    axios
+      .get(MyCategories)
+      .then((response) => {
+        setCategory(response.data.data || []);
+      })
+      .catch(() => setCategory([]));
+      // Get my all packages options
+      axios
+        .get(MyPackages)
+        .then((response) => {
+          setPackageOptions(response.data.data || []);
+        })
+        .catch(() => setPackageOptions([]));
+      // Get my all price options
+      axios
+        .get(MyTicketPrice)
+        .then((response) => {
+          setPriceOptions(response.data.data || []);
+        })
+        .catch(() => setPriceOptions([]));
+  },  []);
 
   const handleSubmit = async (event) => {
-      event.preventDefault();
-      console.log(title);
-      console.log(description);
-      console.log(location);
-      console.log(capacity);
+    event.preventDefault();
+    setLoading(true);
+    try {
+      // Format the date when submitting
+      const formattedStartDate = start_date
+        ? dayjs(start_date).format("YYYY-MM-DD hh:mm A")
+        : null;
+      const response = await axios.post(MyEvents, {
+        title: title,
+        tags: [tags],
+        prices: prices,
+        location: location,
+        capacity: capacity,
+        category: selectedCategory,
+        packages: packages,
+        start_date: formattedStartDate,
+        end_date: end_date ? dayjs(end_date).format("YYYY-MM-DD hh:mm A") : null,
+        thumbnail: thumbnail,
+        description: description,
+      });
+      if (response.status == 201) {
+        setSnackbar({
+          open: true,
+          message: response.data.message,
+          severity: "success",
+        });
+      } else {
+        setSnackbar({
+          open: true,
+          message: response.data.message,
+          severity: "error",
+        });
+      }
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.message || "Something went wrong.",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // package handle change
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPackages(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+  const priceHandleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPrices(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  // Upload thumbnail/image
+  const handleFilesChange = (acceptedFiles) => {
+    setThumbnail(acceptedFiles); // Store the files in state
+    console.log("Files received:", acceptedFiles);
   };
 
   return (
     <React.Fragment>
       <Box className="create_event_form">
         <form onSubmit={handleSubmit}>
-          <FileDropZone />
+          <FileDropZone onFilesChange={handleFilesChange} />
           <Box className="mt15">
             <Typography className="event_form_label" variant="p">
               Event Title
@@ -60,7 +184,7 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(event) => setTitle(event.target.value)}
+              onChange={(event) => setDescription(event.target.value)}
             />
             <Typography className="event_form_label" variant="p">
               Event Tag
@@ -75,7 +199,7 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(event) => setDescription(event.target.value)}
+              onChange={(tags) => setTags(tags.target.value)}
             />
             <Typography className="event_tag_label" variant="body2">
               Event Tags Separated by Comma. E.G: Food, Travel
@@ -93,7 +217,7 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(event) => setLocation(event.target.value)}
+              onChange={(location) => setLocation(location.target.value)}
             />
             <Typography className="event_form_label" variant="p">
               Add Event Capacity
@@ -108,78 +232,111 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(event) => setCapacity(event.target.value)}
+              onChange={(capacity) => setCapacity(capacity.target.value)}
             />
             <Typography className="event_form_label" variant="p">
               Event Category
             </Typography>
             <FormControl fullWidth>
-              <InputLabel id="event-select">Tab Here</InputLabel>
+              <InputLabel id="category-select-label">Tab Here</InputLabel>
               <Select
-                labelId="event-select"
+                labelId="category-select-label"
+                id="category-select"
                 className="custom-select common_field_text"
-                id="event-select"
-                value={category}
-                label="Event Category"
-                onChange={(event) => setCategory(event.target.value)}
+                value={selectedCategory}
+                label="Tab Here"
+                onChange={(event) => setSelectedCategory(event.target.value)}
               >
-                <MenuItem value={1}>Male</MenuItem>
-                <MenuItem value={2}>Female</MenuItem>
-                <MenuItem value={3}>Other</MenuItem>
+                {category.length > 0 ? (
+                  category.map((cat) => (
+                    <MenuItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Categories Available</MenuItem>
+                )}
               </Select>
             </FormControl>
             <Typography className="event_form_label" variant="p">
               Select Package/Add
             </Typography>
             <FormControl fullWidth>
-              <InputLabel id="event-select">Tab Here</InputLabel>
+              <InputLabel id="demo-multiple-name-label">Tab Here</InputLabel>
               <Select
-                labelId="event-select"
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
                 className="custom-select common_field_text"
-                id="event-select"
+                multiple
                 value={packages}
-                label="Event Category"
-                onChange={(event) => setPackages(event.target.value)}
+                onChange={handleChange}
+                input={<OutlinedInput label="Name" />}
+                MenuProps={MenuProps}
               >
-                <MenuItem value={1}>Male</MenuItem>
-                <MenuItem value={2}>Female</MenuItem>
-                <MenuItem value={3}>Other</MenuItem>
+                {packageOptions.map((pkg) => (
+                  <MenuItem key={pkg.id} value={pkg.id}>
+                    {pkg.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Typography className="event_form_label" variant="p">
+              Select Ticker Price/Add
+            </Typography>
+            <FormControl fullWidth>
+              <InputLabel id="ticket-price-label">Tab Here</InputLabel>
+              <Select
+                labelId="ticket-price-label"
+                id="ticket-price"
+                className="custom-select common_field_text"
+                multiple
+                value={prices}
+                onChange={priceHandleChange}
+                input={<OutlinedInput label="Name" />}
+                MenuProps={MenuProps}
+              >
+                {priceOptions.map((price) => (
+                  <MenuItem key={price.id} value={price.id}>
+                    {price.price}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <Typography className="event_form_label" variant="p">
               Event Staring From
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
+              <DateTimePicker
                 label="Tab Here"
-                value={dob}
+                value={start_date}
                 className="common_field_text"
-                onChange={(newDate) => setDob(newDate)}
+                onChange={(end_date) => setStartDate(end_date)}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "15px",
                   },
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </LocalizationProvider>
             <Typography className="event_form_label" variant="p">
               Event Ending From
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
+              <DateTimePicker
                 label="Tab Here"
-                value={dob}
+                value={end_date}
                 className="common_field_text"
-                onChange={(newDate) => setDob(newDate)}
+                onChange={(end_date) => setSEndDate(end_date)}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "15px",
                   },
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </LocalizationProvider>
+            {loading && <CustomLoader />}
           </Box>
           <Box>
             <Button variant="contained" className="app_btn" type="submit">
@@ -187,6 +344,12 @@ export default function EventForm() {
             </Button>
           </Box>
         </form>
+        <CustomSnackbar
+          open={snackbar.open}
+          message={snackbar.message}
+          severity={snackbar.severity}
+          onClose={handleSnackbarClose}
+        />
       </Box>
     </React.Fragment>
   );
