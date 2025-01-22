@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // For getting URL parameters and navigation
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
@@ -12,7 +14,12 @@ import axios from "../../../services/axiosConfig";
 import FileDropZone from "../../../components/dropzone";
 import CustomLoader from "../../../components/customLoader";
 import CustomSnackbar from "../../../components/snackbar";
-import { MyEvents, MyCategories, MyPackages, MyTicketPrice} from "../../../services/api_service";
+import {
+  EventDetailURL,
+  MyCategories,
+  MyPackages,
+  MyTicketPrice,
+} from "../../../services/api_service";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -25,21 +32,33 @@ const MenuProps = {
   },
 };
 
-export default function EventForm() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
+export default function EventUpdateForm() {
+  const { id } = useParams(); // Get event ID from URL
   const [category, setCategory] = useState([]); // Initialize as an array
-  const [selectedCategory, setSelectedCategory] = useState(""); // For the selected value
-  const [prices, setPrices] = useState([]);
-  const [packages, setPackages] = useState([]);
   const [priceOptions, setPriceOptions] = useState([]); // To store fetched packages
   const [packageOptions, setPackageOptions] = useState([]); // To store fetched packages
-  const [thumbnail, setThumbnail] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [start_date, setStartDate] = useState(null);
-  const [end_date, setSEndDate] = useState(null);
+    
+  const [eventData, setEventData] = useState({
+    title: "",
+    description: "",
+    tags: [],
+    start_date: "",
+    end_date: "",
+    location: "",
+    category: "",
+    category_name: "",
+    event_capacity: "",
+    thumbnail: "",
+    packages: [],
+    prices: [],
+  });
+    
+    const handleInputChange = (e) => {
+        setEventData({
+        ...eventData,
+        [e.target.name]: e.target.value,
+        });
+    };
 
   // messages
   const [loading, setLoading] = useState(false);
@@ -48,7 +67,6 @@ export default function EventForm() {
     message: "",
     severity: "error",
   });
-
 
   // Snackbar
   const handleSnackbarClose = () => {
@@ -63,57 +81,57 @@ export default function EventForm() {
         setCategory(response.data.data || []);
       })
       .catch(() => setCategory([]));
-      // Get my all packages options
-      axios
-        .get(MyPackages)
-        .then((response) => {
-          setPackageOptions(response.data.data || []);
-        })
-        .catch(() => setPackageOptions([]));
+    // Get my all packages options
+    axios
+      .get(MyPackages)
+      .then((response) => setPackageOptions(response.data.data || []))
+      .catch(() => setPackageOptions([]));
       // Get my all price options
       axios
         .get(MyTicketPrice)
-        .then((response) => {
-          setPriceOptions(response.data.data || []);
-        })
+        .then((response) => setPriceOptions(response.data.data || []))
         .catch(() => setPriceOptions([]));
-  },  []);
+  }, []);
+    
+    // Fetch event data
+    useEffect(() => {
+      axios
+        .get(EventDetailURL(id)) // Pass id to EventDetailURL
+        .then((response) => {
+          if (response) {
+            //console.log(response.data.data);
+              const event = response.data.data;
+            setEventData({
+              ...event,
+              start_date: event.start_date,
+              end_date: event.end_date,
+              packages: event.packages.map((pkg) => pkg.id), // Pre-select existing packages
+              prices: event.prices.map((price) => price.id),
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching events:", error);
+          setEventData([]);
+        });
+    }, [id]);
 
+   // Update event data
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     try {
-      // Format the date when submitting
-      const formattedStartDate = start_date
-        ? dayjs(start_date).format("YYYY-MM-DD hh:mm A")
-        : null;
-      const response = await axios.post(MyEvents, {
-        title: title,
-        tags: [tags],
-        prices: prices,
-        location: location,
-        capacity: capacity,
-        category: selectedCategory,
-        packages: packages,
-        start_date: formattedStartDate,
-        end_date: end_date ? dayjs(end_date).format("YYYY-MM-DD hh:mm A") : null,
-        thumbnail: thumbnail,
-        description: description,
-      });
-      if (response.status == 201) {
-        setSnackbar({
-          open: true,
-          message: response.data.message,
-          severity: "success",
-        });
-      } else {
-        setSnackbar({
-          open: true,
-          message: response.data.message,
-          severity: "error",
-        });
+      const response = await axios.put(EventDetailURL(id), eventData);
+        if (response.data.status === 'success') {
+            //console.log(response.data);
+            setSnackbar({
+            open: true,
+            message: response.data.message,
+            severity: "success",
+            });
       }
     } catch (err) {
+      console.log(err);
       setSnackbar({
         open: true,
         message: err.response?.data?.message || "Something went wrong.",
@@ -125,29 +143,35 @@ export default function EventForm() {
   };
 
   // package handle change
-  const handleChange = (event) => {
+  const handlePackagesChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPackages(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setEventData({
+      ...eventData,
+      packages: typeof value === "string" ? value.split(",") : value,
+    });
   };
+    
   const priceHandleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPrices(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setEventData({
+      ...eventData,
+      prices: typeof value === "string" ? value.split(",") : value,
+    });
   };
 
   // Upload thumbnail/image
-  const handleFilesChange = (acceptedFiles) => {
-    setThumbnail(acceptedFiles); // Store the files in state
-    console.log("Files received:", acceptedFiles);
+  const handleFilesChange = (files) => {
+    // Assuming you need only the first file's Base64 string
+      //setThumbnail(files[0]); // Set the first Base64 string as the thumbnail
+      setEventData({
+          ...eventData,
+          thumbnail: files[0] && files[0].base64,
+      })
+    //console.log("Received Base64 files:", files[0]);
   };
 
   return (
@@ -155,6 +179,7 @@ export default function EventForm() {
       <Box className="create_event_form">
         <form onSubmit={handleSubmit}>
           <FileDropZone onFilesChange={handleFilesChange} />
+          {/* <img src={eventData.thumbnail} alt="" /> */}
           <Box className="mt15">
             <Typography className="event_form_label" variant="p">
               Event Title
@@ -169,7 +194,8 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(event) => setTitle(event.target.value)}
+              onChange={handleInputChange}
+              value={eventData.title}
             />
             <Typography className="event_form_label" variant="p">
               Event Description
@@ -184,7 +210,8 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(event) => setDescription(event.target.value)}
+              onChange={handleInputChange}
+              value={eventData.description}
             />
             <Typography className="event_form_label" variant="p">
               Event Tag
@@ -199,7 +226,8 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(tags) => setTags(tags.target.value)}
+              onChange={handleInputChange}
+              value={eventData.tags}
             />
             <Typography className="event_tag_label" variant="body2">
               Event Tags Separated by Comma. E.G: Food, Travel
@@ -217,7 +245,8 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(location) => setLocation(location.target.value)}
+              onChange={handleInputChange}
+              value={eventData.location}
             />
             <Typography className="event_form_label" variant="p">
               Add Event Capacity
@@ -232,7 +261,8 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(capacity) => setCapacity(capacity.target.value)}
+              onChange={handleInputChange}
+              value={eventData.dashboard?.event_capacity ?? "0"}
             />
             <Typography className="event_form_label" variant="p">
               Event Category
@@ -241,11 +271,11 @@ export default function EventForm() {
               <InputLabel id="category-select-label">Tab Here</InputLabel>
               <Select
                 labelId="category-select-label"
-                id="category-select"
                 className="custom-select common_field_text"
-                value={selectedCategory}
-                label="Tab Here"
-                onChange={(event) => setSelectedCategory(event.target.value)}
+                id="category-select"
+                name="category" // Ensure this name matches the state field
+                value={eventData.category}
+                onChange={handleInputChange}
               >
                 {category.length > 0 ? (
                   category.map((cat) => (
@@ -262,15 +292,15 @@ export default function EventForm() {
               Select Package/Add
             </Typography>
             <FormControl fullWidth>
-              <InputLabel id="demo-multiple-name-label">Tab Here</InputLabel>
+              <InputLabel id="packages-label">Packages</InputLabel>
               <Select
-                labelId="demo-multiple-name-label"
-                id="demo-multiple-name"
+                labelId="packages-label"
+                id="packages-select"
                 className="custom-select common_field_text"
                 multiple
-                value={packages}
-                onChange={handleChange}
-                input={<OutlinedInput label="Name" />}
+                value={eventData.packages}
+                onChange={handlePackagesChange}
+                input={<OutlinedInput label="Packages" />}
                 MenuProps={MenuProps}
               >
                 {packageOptions.map((pkg) => (
@@ -290,7 +320,7 @@ export default function EventForm() {
                 id="ticket-price"
                 className="custom-select common_field_text"
                 multiple
-                value={prices}
+                value={eventData.prices}
                 onChange={priceHandleChange}
                 input={<OutlinedInput label="Name" />}
                 MenuProps={MenuProps}
@@ -307,10 +337,19 @@ export default function EventForm() {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Tab Here"
-                value={start_date}
+                label="Event Starting From"
+                value={
+                  eventData.start_date ? dayjs(eventData.start_date) : null
+                }
+                onChange={(newValue) => {
+                  setEventData((prevData) => ({
+                    ...prevData,
+                    start_date: newValue
+                      ? dayjs(newValue).format("YYYY-MM-DD hh:mm A")
+                      : null,
+                  }));
+                }}
                 className="common_field_text"
-                onChange={(end_date) => setStartDate(end_date)}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "15px",
@@ -324,10 +363,17 @@ export default function EventForm() {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Tab Here"
-                value={end_date}
+                label="Event Ending From"
+                value={eventData.start_date ? dayjs(eventData.end_date) : null}
+                onChange={(newValue) => {
+                  setEventData((prevData) => ({
+                    ...prevData,
+                    end_date: newValue
+                      ? dayjs(newValue).format("YYYY-MM-DD hh:mm A")
+                      : null,
+                  }));
+                }}
                 className="common_field_text"
-                onChange={(end_date) => setSEndDate(end_date)}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "15px",
@@ -340,7 +386,7 @@ export default function EventForm() {
           </Box>
           <Box>
             <Button variant="contained" className="app_btn" type="submit">
-              Create Event
+              Update Event
             </Button>
           </Box>
         </form>

@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import Box from "@mui/material/Box";
+import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Typography from "@mui/material/Typography";
 
 export default function Events(props) {
   return (
@@ -52,16 +51,16 @@ export default function Events(props) {
           </Box>
           <Box className="event_icons">
             <Box>
-              <Link to={props.update_link}>
+              <Button onClick={props.update_event}>
                 <EditIcon />
-              </Link>
+              </Button>
             </Box>
             <Box>
-              <Link to={props.delete_link}>
+              <Button onClick={props.delete_event}>
                 <DeleteIcon />
-              </Link>
+              </Button>
             </Box>
-            <Box>
+            <Box className="event_detail_btn">
               <Link to={props.detail_link}>
                 <VisibilityIcon />
               </Link>

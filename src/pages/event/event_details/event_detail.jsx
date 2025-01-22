@@ -1,78 +1,91 @@
-import React from "react";
+import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import PlaceIcon from "@mui/icons-material/Place";
 
+import axios from "../../../services/axiosConfig";
 import ToolsBar from "../../../components/tools_bar";
+import { EventDetailURL } from "../../../services/api_service";
 
 export default function EventDetails() {
+  const [event, setEvent] = useState([]);
+  const { id } = useParams(); // Extract id from route parameters
+
+  useEffect(() => {
+    axios
+      .get(EventDetailURL(id)) // Pass id to EventDetailURL
+      .then((response) => {
+        if (response) {
+          // console.log(response.data.data);
+          setEvent(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+        setEvent([]);
+      });
+  }, [id]);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <Container className="content">
         <ToolsBar link="/events/" title="Event Details" />
-        <Box className="event_details_sec">
-          <Box className="thumbnail-sec">
-            <img
-              src="https://epassadminbucket.s3.amazonaws.com/event/01/25/banner_common.png?AWSAccessKeyId=AKIA4EZC3GL2HN5XRMPD&Signature=4JPf023FqKXEo64UDEOiQLksIfo%3D&Expires=1737381343"
-              alt=""
-            />
-          </Box>
-          <Box className="capacity_sec">
-            <Box className="single_capacity_box">
-              <Typography className="capacity_counter" variant="h6">
-                100
-              </Typography>
-              <Typography variant="p">Event Capacity</Typography>
+        <Box className="parent_sec">
+          <Box className="event_details_sec">
+            <Box className="thumbnail-sec">
+              <img src={event.thumbnail} alt={event.title} />
             </Box>
-            <Box className="single_capacity_box">
-              <Typography className="capacity_counter" variant="h6">
-                100
-              </Typography>
-              <Typography variant="p">Current Attendees</Typography>
+            <Box className="capacity_sec">
+              <Box className="single_capacity_box">
+                <Typography className="capacity_counter" variant="h6">
+                  {event.dashboard?.event_capacity ?? "0"}
+                </Typography>
+                <Typography variant="p">Event Capacity</Typography>
+              </Box>
+              <Box className="single_capacity_box">
+                <Typography className="capacity_counter" variant="h6">
+                  {event.current_attendees}
+                </Typography>
+                <Typography variant="p">Current Attendees</Typography>
+              </Box>
+              <Box className="single_capacity_box">
+                <Typography className="capacity_counter" variant="h6">
+                  {event.total_attendees}
+                </Typography>
+                <Typography variant="p">Total Attendees</Typography>
+              </Box>
             </Box>
-            <Box className="single_capacity_box">
-              <Typography className="capacity_counter" variant="h6">
-                100
+            <Box className="capacity_bottom_sec">
+              <Typography className="event_time" variant="p">
+                {event.start_date}
               </Typography>
-              <Typography variant="p">Total Attendees</Typography>
-            </Box>
-          </Box>
-          <Box className="capacity_bottom_sec">
-            <Typography className="event_time" variant="p">
-              2025-01-01 02:33 PM
-            </Typography>
-            <Typography className="category_text" variant="p">
-              Education
-            </Typography>
-          </Box>
-          <Box className="event_info">
-            <Typography className="event_title" variant="h6">
-              Almiron High School Festival
-            </Typography>
-            <Box className="venue">
-              <PlaceIcon />
-              <Typography className="event_venue" variant="p">
-                4401 Social Alley, North Charleston, South Carolina 29405,
-                United States
+              <Typography className="category_text" variant="p">
+                {event.category_name}
               </Typography>
             </Box>
-          </Box>
-          <Box className="event_description">
-            <Typography className="about_event_text" variant="h5">
-              About this Event
-            </Typography>
-            <Typography className="event_content" variant="p">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Distinctively unleash client-based schemas and alternative
-              outsourcing. Competently reintermediate multidisciplinary
-              alignments vis-a-vis frictionless opportunities. Conveniently
-              seize cross-platform ROI for economically sound benefits. Credibly
-              simplify virtual infomediaries with fully tested web-readiness.
-              Credibly maximize distinctive best practices.
-            </Typography>
+            <Box className="event_info">
+              <Typography className="event_title" variant="h6">
+                {event.title}
+              </Typography>
+              <Box className="venue">
+                <PlaceIcon />
+                <Typography className="event_venue" variant="p">
+                  {event.location}
+                </Typography>
+              </Box>
+            </Box>
+            <Box className="event_description">
+              <Typography className="about_event_text" variant="h5">
+                About this Event
+              </Typography>
+              <Typography className="event_content" variant="p">
+                {event.description}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Container>
