@@ -1,11 +1,31 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const FileDropZone = () => {
-  const onDrop = useCallback((acceptedFiles) => {
-    // Handle the files
-    console.log(acceptedFiles);
-  }, []);
+// eslint-disable-next-line react/prop-types
+const FileDropZone = ({ onFilesChange }) => {
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const fileReaders = acceptedFiles.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            resolve(reader.result); // Full Data URL
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file); // Read as Data URL
+        });
+      });
+
+      Promise.all(fileReaders)
+        .then((base64Files) => {
+          onFilesChange(base64Files); // Pass the Base64 files
+        })
+        .catch((error) =>
+          console.error("Error reading files as Base64:", error)
+        );
+    },
+    [onFilesChange]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
