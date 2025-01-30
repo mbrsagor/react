@@ -12,7 +12,9 @@ import Layout from "./components/layout";
 import NotFound from "./pages/error/not_found";
 import Sponsor from "./pages/sponsor/sponsor";
 import Guard from "./pages/guard/guards/guard";
+// Profile
 import Profile from "./pages/profile/profile";
+import ProfileUpdate from "./pages/profile/profile_update/profileUpdate";
 // Categories all pages
 import Categories from "./pages/category/category_lv/categories";
 // Prices all pages
@@ -41,8 +43,9 @@ export default function App() {
           <Route path="/event/:id" element={<ProtectedRoute> <EventDetails /></ProtectedRoute>}/>
           <Route path="/event-update/:id" element={<ProtectedRoute> <EventUpdate /></ProtectedRoute>}/>
           <Route path="/sponsor" element={<ProtectedRoute> <Sponsor /></ProtectedRoute>}/>
-          <Route path="profile" element={<Profile />} />
-          <Route path="guard" element={<Guard />} />
+          <Route path="/guard" element={<ProtectedRoute> <Guard /></ProtectedRoute>}/>
+          <Route path="/profile" element={<ProtectedRoute> <Profile /></ProtectedRoute>}/>
+          <Route path="/profile_update/:id" element={<ProtectedRoute> <ProfileUpdate /></ProtectedRoute>}/>
         </Route>
         {/* public route */}
         <Route path="signin" element={<SignIn />} />

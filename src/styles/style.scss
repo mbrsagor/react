@@ -47,7 +47,11 @@ $input_border_color: #c4b6b6;
 }
 
 .mb10 {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
+}
+
+.mb5 {
+    margin-bottom: 5px !important;
 }
 
 .mt10 {
@@ -664,7 +668,7 @@ Event components
 .active_user_status {
     border: 1px solid #ccc;
     text-emphasis: none;
-    padding: 3px 7px;
+    padding: 5px 12px;
     border-radius: 10px;
     text-align: center;
     max-width: fit-content;
@@ -680,6 +684,10 @@ Event components
         font-weight: 600;
         color: $primary_color;
     }
+}
+
+.guard_generic {
+    top: 30%;
 }
 
 .events_card {
@@ -805,6 +813,71 @@ Event components
     }
     .event_content {
         margin-top: 10px;
+    }
+}
+
+/*======================
+    profile component
+=======================*/
+.profile_item_lv {
+    a {
+        text-decoration: none;
+        color: $primary_color;
+        font-size: 19px;
+    }
+    .item {
+        display: flex;
+        grid-gap: 10px;
+        margin-bottom: 10px;
+        padding: 15px;
+        border: 1px solid $black_color;
+        border-radius: 10px;
+    }
+}
+.profile_sec {
+    padding: 5px;
+    .profile_header {
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+        grid-gap: 20px;
+        margin-bottom: 10px;
+        .avatar{
+            width: 110px;
+            img {
+                width: 100%;
+            }
+        }
+        .user_info {
+            .username {
+                color: $primary_color;
+                font-weight: 600;
+            }
+            .role {
+                border: 1px solid $primary_color;
+                padding: 7px 10px;
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+.update_profile_sec {
+    padding: 15px;
+    .profile_update_avatar {
+        margin-bottom: 10px;
+        max-width: 100px;
+        margin: auto;
+        position: relative;
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+    .one_half {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 15px;
     }
 }
 

@@ -131,7 +131,7 @@ export default function CreateCategoryModal({open, handleClose, onCategoryAdded,
                       : "Event Category Name"}
                   </Typography>
                   <TextField
-                    label="Write Here"
+                    placeholder="Write Here"
                     name="name"
                     className="common_field_text"
                     variant="outlined"

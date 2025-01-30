@@ -164,7 +164,7 @@ export default function EventForm() {
               Event Title
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="title"
               className="common_field_text"
               variant="outlined"
@@ -179,7 +179,7 @@ export default function EventForm() {
               Event Description
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="description"
               className="common_field_text"
               variant="outlined"
@@ -194,7 +194,7 @@ export default function EventForm() {
               Event Tag
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="tags"
               className="common_field_text"
               variant="outlined"
@@ -212,7 +212,7 @@ export default function EventForm() {
               Add Event Venue
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="location"
               className="common_field_text"
               variant="outlined"
@@ -227,7 +227,7 @@ export default function EventForm() {
               Add Event Capacity
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="capacity"
               className="common_field_text"
               variant="outlined"
@@ -248,7 +248,7 @@ export default function EventForm() {
                 id="category-select"
                 className="custom-select common_field_text"
                 value={selectedCategory}
-                label="Tab Here"
+                placeholder="Tab Here"
                 onChange={(event) => setSelectedCategory(event.target.value)}
               >
                 {category.length > 0 ? (
@@ -311,7 +311,7 @@ export default function EventForm() {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Tab Here"
+                placeholder="Tab Here"
                 value={start_date}
                 className="common_field_text"
                 onChange={(end_date) => setStartDate(end_date)}
@@ -328,7 +328,7 @@ export default function EventForm() {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Tab Here"
+                placeholder="Tab Here"
                 value={end_date}
                 className="common_field_text"
                 onChange={(end_date) => setSEndDate(end_date)}

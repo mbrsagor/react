@@ -12,28 +12,33 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddCircleOutlineTwoToneIcon from "@mui/icons-material/AddCircleOutlineTwoTone";
 
+import ManAvatar from "../../../assets/avatar.png";
 import ToolsBar from "../../../components/tools_bar";
 import axios from "../../../services/axiosConfig";
 import CustomSnackbar from "../../../components/snackbar";
-import { MyGuards } from "../../../services/api_service";
+import { MyGuards, GuardDeleteURL } from "../../../services/api_service";
+import GuardModal from "./guardModal";
 
 export default function Guard() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [users, setUsers] = useState([]);
-  // Snackbar state
+  const [modalOpen, setModalOpen] = useState(false); // For the modal
+  const [dialogOpen, setDialogOpen] = useState(false); // For the delete dialog
+  const [users, setUsers] = useState([]); // List of guards
+  const [selectedUser, setSelectedUser] = useState(null); // Selected user for deletion
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "error",
   });
 
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
+  const handleOpen = () => setModalOpen(true); // Open the modal
 
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setSelectedUser(null); // Clear selected user on dialog close
   };
 
   const fetchGuards = () => {
@@ -47,7 +52,7 @@ export default function Guard() {
       .catch((error) => {
         setSnackbar({
           open: true,
-          message: error,
+          message: error.message,
           severity: "error",
         });
         setUsers([]);
@@ -57,6 +62,31 @@ export default function Guard() {
   useEffect(() => {
     fetchGuards();
   }, []);
+
+  const handleDeleteEvent = async () => {
+    if (!selectedUser) return;
+
+    try {
+      const response = await axios.delete(GuardDeleteURL(selectedUser));
+      if (response.status === 200) {
+        setSnackbar({
+          open: true,
+          message: response.data.message || "Guard deleted successfully!",
+          severity: "success",
+        });
+        // Remove deleted user from the list
+        setUsers(users.filter((user) => user.id !== selectedUser));
+      }
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err.response?.data?.message || "Failed to delete guard.",
+        severity: "error",
+      });
+    } finally {
+      handleDialogClose(); // Close dialog regardless of outcome
+    }
+  };
 
   return (
     <React.Fragment>
@@ -75,10 +105,17 @@ export default function Guard() {
                 <Box className="package_left_text">
                   <Box className="gard_card_sec">
                     <Box className="avatar_sec">
-                      <Avatar size="lg" />
+                      <Avatar
+                        alt="Guard"
+                        src={ManAvatar}
+                        sx={{
+                          width: 80,
+                          height: 80,
+                        }}
+                      />
                     </Box>
                     <Box>
-                      <Box>
+                      <Box className="mb5">
                         <Typography
                           className="active_user_status"
                           variant="body1"
@@ -86,7 +123,7 @@ export default function Guard() {
                           active
                         </Typography>
                       </Box>
-                      <Box>
+                      <Box className="mb5">
                         <Typography className="fullname" variant="p">
                           {user.fullname}
                         </Typography>
@@ -105,7 +142,12 @@ export default function Guard() {
                   </Box>
                 </Box>
                 <Box className="actions">
-                  <Button onClick={() => handleDialogOpen(user.id)}>
+                  <Button
+                    onClick={() => {
+                      setSelectedUser(user.id); // Set the selected user
+                      setDialogOpen(true); // Open delete dialog
+                    }}
+                  >
                     <DeleteRoundedIcon />
                   </Button>
                 </Box>
@@ -117,12 +159,31 @@ export default function Guard() {
             </Typography>
           )}
         </Box>
+        <GuardModal
+          open={modalOpen}
+          handleClose={() => setModalOpen(false)}
+          onGuardAdded={fetchGuards}
+        />
         <CustomSnackbar
           open={snackbar.open}
           message={snackbar.message}
           severity={snackbar.severity}
           onClose={handleSnackbarClose}
         />
+        <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Warning</DialogTitle>
+          <DialogContent>
+            Are you sure you want to delete this guard?
+          </DialogContent>
+          <DialogActions>
+            <Button className="custom_dialog_btn" onClick={handleDeleteEvent}>
+              Yes
+            </Button>
+            <Button className="custom_dialog_btn" onClick={handleDialogClose}>
+              Not Now
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </React.Fragment>
   );
