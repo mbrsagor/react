@@ -8,15 +8,23 @@ import ToolsBar from "../../components/tools_bar";
 import Avatar from "../../assets/avatar.png";
 import ItemList from './itemList';
 
+import axios from "../../services/axiosConfig";
+import { profileURL } from "../../services/api_service";
+
 export default function Profile() {
   const [userData, setUserData] = useState("");
 
   // Fetch user data when component mounts and updates whenever user data changes in local storage.
   useEffect(() => {
-      const user = localStorage.getItem("user");
-      if (user) {
-        setUserData(JSON.parse(user)); // Parse and set user data
-      }
+     axios.get(profileURL).then((response) => {
+       if (response) {
+         const profile_data = response.data.data;
+         setUserData({
+           ...profile_data,
+         });
+       }
+     });
+     
     }, []);
   
   return (
@@ -28,7 +36,10 @@ export default function Profile() {
           <Box className="profile_sec">
             <Box className="profile_header">
               <Box className="avatar">
-                <img src={Avatar} alt="User Avatar" />
+                <img
+                  src={userData.avatar ? userData.avatar : Avatar}
+                  alt={userData.fullname}
+                />
               </Box>
               <Box className="user_info">
                 <Typography className="username" variant="h6">

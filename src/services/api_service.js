@@ -14,6 +14,7 @@ export const verifyOTP = `${user}/signup-verify-otp/`;
 export const loginURL = `${user}/signin/`;
 export const signupURL = `${user}/signup/`;
 export const profileURL = `${user}/profile/`;
+export const ProfileUpdateURL = (id) => `${user}/profile/${id}/`;
 export const passwordResetURL = `${user}/password-reset/`;
 export const passwordChangeConfirmURL = `${user}/password-change-confirm/`;
 export const passwordChangeURL = (id) => `${user}/password-change/${id}/`;

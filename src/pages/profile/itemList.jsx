@@ -12,20 +12,19 @@ import EditLocationAltOutlinedIcon from "@mui/icons-material/EditLocationAltOutl
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
-
+import PasswordChangeModal from "./password_change/passwordChangeModal";
 
 export default function ItemList() {
+  const [userData, setUserData] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
-    const [userData, setUserData] = useState("");
-    
-      // Fetch user data when component mounts and updates whenever user data changes in local storage.
-      useEffect(() => {
-          const user = localStorage.getItem("user");
-          if (user) {
-            setUserData(JSON.parse(user)); // Parse and set user data
-          }
-        }, []);
-
+  // Fetch user data when component mounts and updates whenever user data changes in local storage.
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUserData(JSON.parse(user)); // Parse and set user data
+    }
+  }, []);
 
   return (
     <Container className="profile_item_lv">
@@ -35,7 +34,7 @@ export default function ItemList() {
           <Typography variant="p">Edit Profile </Typography>
         </Box>
       </Link>
-      <Link to="/home">
+      <Link to="#">
         <Box className="item">
           <KeyOutlinedIcon />
           <Typography variant="p">Change Password</Typography>
@@ -77,6 +76,10 @@ export default function ItemList() {
           <Typography variant="p">Sign Out</Typography>
         </Box>
       </Link>
+      <PasswordChangeModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)} // Close the modal
+      />
     </Container>
   );
 }
