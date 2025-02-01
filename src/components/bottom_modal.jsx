@@ -62,7 +62,7 @@ export default function BottomMenuModal({ open, onClose }) {
                 <Typography className="menu_item_text" variant="p"> Bulk Ticket </Typography>
               </Box>
             </Link>
-            <Link className="menu_item" to="/">
+            <Link className="menu_item" to="/bulk-reg">
               <Box>
                 <CasesOutlinedIcon />
               </Box>

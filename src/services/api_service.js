@@ -17,7 +17,9 @@ export const profileURL = `${user}/profile/`;
 export const ProfileUpdateURL = (id) => `${user}/profile/${id}/`;
 export const passwordResetURL = `${user}/password-reset/`;
 export const passwordChangeConfirmURL = `${user}/password-change-confirm/`;
-export const passwordChangeURL = (id) => `${user}/password-change/${id}/`;
+export const passwordChangeURL = (id) => `${user}/change-password/${id}/`;
+export const changePhoneNumberURL = (id) => `${user}/change-phone/${id}/`;
+export const deleteAccountURL = (id) => `${user}/account-delete/${id}/`;
 
 // Sponsor endpoints
 export const SponsorHome = `${event}/company-home-api/`;

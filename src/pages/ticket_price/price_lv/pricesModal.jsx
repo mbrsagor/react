@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import dayjs from "dayjs";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -22,7 +22,7 @@ export default function PriceModel({
 }) {
   const [price, setPrice] = useState("");
   const [start_date, setStartDate] = useState(null);
-  const [end_date, setSEndDate] = useState(null);
+  const [end_date, setEndDate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -30,17 +30,17 @@ export default function PriceModel({
     severity: "error",
   });
 
-  const fileInputRef = useRef(null);
-
   useEffect(() => {
     if (selectedPrice) {
       setPrice(selectedPrice.price || "");
-      setStartDate(selectedPrice.start_date || "");
-      setSEndDate(selectedPrice.end_date || "");
+      setStartDate(
+        selectedPrice.start_date ? dayjs(selectedPrice.start_date) : null
+      );
+      setEndDate(selectedPrice.end_date ? dayjs(selectedPrice.end_date) : null);
     } else {
       setPrice("");
-      setStartDate("");
-      setSEndDate("");
+      setStartDate(null);
+      setEndDate(null);
     }
   }, [selectedPrice]);
 
@@ -48,14 +48,23 @@ export default function PriceModel({
     setSnackbar({ ...snackbar, open: false });
   };
 
+  // Create and update new single ticket price.
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-      try {
-      // Format the date when submitting
-      const formattedStartDate = start_date ? dayjs(start_date).format("YYYY-MM-DD hh:mm A") : null;
-      const formattedEndDate = end_date ? dayjs(end_date).format("YYYY-MM-DD hh:mm A") : null;
-      const requestData = { price, formattedStartDate, formattedEndDate };
+
+    try {
+      const formattedStartDate = start_date
+        ? dayjs(start_date).format("YYYY-MM-DD HH:mm a")
+        : null;
+      const formattedEndDate = end_date
+        ? dayjs(end_date).format("YYYY-MM-DD HH:mm a")
+        : null;
+      const requestData = {
+        price: price,
+        start_date: formattedStartDate,
+        end_date: formattedEndDate,
+      };
       let response;
 
       if (selectedPrice) {
@@ -74,11 +83,8 @@ export default function PriceModel({
           severity: "success",
         });
         setPrice("");
-        setStartDate("");
-        setSEndDate("");
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
+        setStartDate(null);
+        setEndDate(null);
         onPriceAdded();
         handleClose();
       } else {
@@ -117,15 +123,17 @@ export default function PriceModel({
           <Box className="package_modal">
             <Box className="mt15">
               <Typography className="create_package_title" variant="h6">
-                Create Single Ticket Price
+                {selectedPrice
+                  ? "Edit Ticket Price"
+                  : "Create Single Ticket Price"}
               </Typography>
               <form onSubmit={handleSubmit} className="create_event_form">
                 <Box>
-                  <Typography className="event_form_label" variant="p">
+                  <Typography className="event_form_label">
                     Single ticket price
                   </Typography>
                   <TextField
-                    label="0.00"
+                    placeholder="0.00"
                     name="price"
                     className="common_field_text"
                     variant="outlined"
@@ -139,13 +147,15 @@ export default function PriceModel({
                   />
                 </Box>
                 <Box>
-                  <Typography className="event_form_label" variant="p">Start Date</Typography>
+                  <Typography className="event_form_label">
+                    Start Date
+                  </Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
-                      label="Tab Here"
+                      placeholder="Tap Here"
                       value={start_date}
                       className="common_field_text"
-                      onChange={(event) => setSEndDate(event)}
+                      onChange={(newValue) => setStartDate(newValue)}
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           borderRadius: "15px",
@@ -158,13 +168,13 @@ export default function PriceModel({
                   </LocalizationProvider>
                 </Box>
                 <Box>
-                  <Typography className="event_form_label" variant="p">End Date</Typography>
+                  <Typography className="event_form_label">End Date</Typography>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateTimePicker
-                      label="Tab Here"
+                      placeholder="Tap Here"
                       value={end_date}
                       className="common_field_text"
-                      onChange={(event) => setSEndDate(event)}
+                      onChange={(newValue) => setEndDate(newValue)}
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           borderRadius: "15px",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PasswordField from "../../../components/password";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -7,14 +7,12 @@ import Sheet from "@mui/joy/Sheet";
 import Modal from "@mui/joy/Modal";
 
 import axios from "../../../services/axiosConfig";
-import { passwordChangeURL } from "../../../services/api_service";
+import { deleteAccountURL } from "../../../services/api_service";
 import CustomLoader from "../../../components/customLoader";
 import CustomSnackbar from "../../../components/snackbar";
 
 // eslint-disable-next-line react/prop-types
-export default function PasswordChangeModal({ open, onClose }) {
-  const [old_password, setOldPassword] = useState("");
-  const [new_password, setNewPassword] = useState("");
+export default function DeleteAccount({ open, onClose }) {
   const [userData, setUserData] = useState("");
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
@@ -22,6 +20,8 @@ export default function PasswordChangeModal({ open, onClose }) {
     message: "",
     severity: "error",
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -34,28 +34,18 @@ export default function PasswordChangeModal({ open, onClose }) {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  // Delete user data API calls
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
 
     try {
-      const response = await axios.put(passwordChangeURL(userData.user_id), {
-        old_password: old_password,
-        new_password: new_password,
-      });
-
+      const response = await axios.delete(deleteAccountURL(userData.user_id));
       if (response.status === 200) {
-        // Ensure correct response status
-        setSnackbar({
-          open: true,
-          message: response.data.message,
-          severity: "success",
-        });
-
-        // Close the modal after success
-        setTimeout(() => {
-          onClose();
-        }, 1000); // Short delay to allow the message to be seen
+        // Destroy the account after clear token.
+        localStorage.removeItem("token");
+        localStorage.clear();
+        navigate("/signin");
       } else {
         setSnackbar({
           open: true,
@@ -80,7 +70,9 @@ export default function PasswordChangeModal({ open, onClose }) {
       aria-describedby="modal-desc"
       className="password_change_modal_section"
       open={open}
-      onClose={onClose} // Close modal when user clicks outside
+      onClose={() => {
+        onClose();
+      }}
     >
       <Sheet variant="outlined" className="password_change_modal">
         <Typography
@@ -88,30 +80,28 @@ export default function PasswordChangeModal({ open, onClose }) {
           id="modal-title"
           variant="h6"
         >
-          Change Password
+          Warning
         </Typography>
         <Box className="mb10 mt6">
           <Typography className="change_pass_desc" variant="body1">
-            Enter your current password followed by your new password. Ensure
-            your new password is strong and secure.
+            Deleting your account will permanently erase all your data. This
+            account is irreversible. you are sure you want to processed?
           </Typography>
         </Box>
         <form onSubmit={handleSubmit}>
-          <Box className="mb10 mt5">
-            <PasswordField
-              label="Enter current password"
-              onChange={(event) => setOldPassword(event.target.value)}
-            />
+          <Box className="delete_account">
+            <Button type="submit" className="" variant="contained">
+              Yes
+            </Button>
+            <Button
+              type="button"
+              className=""
+              variant="contained"
+              onClick={onClose}
+            >
+              Not Now
+            </Button>
           </Box>
-          <Box className="mb10">
-            <PasswordField
-              label="Enter new password"
-              onChange={(event) => setNewPassword(event.target.value)}
-            />
-          </Box>
-          <Button type="submit" className="app_btn" variant="contained">
-            Submit
-          </Button>
         </form>
         {loading && <CustomLoader />}
         <CustomSnackbar

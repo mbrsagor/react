@@ -114,9 +114,6 @@ export default function Prices() {
           link="/events"
           title="Ticker Prices"
           handleOpen={handleOpen}
-          //   handleOpen={() => {
-          //     console.log("Open modal...");
-          //   }}
           CustomIcon={AddCircleOutlineTwoToneIcon}
         />
         <Box className="parent_sec">

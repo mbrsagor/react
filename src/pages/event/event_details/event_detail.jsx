@@ -86,6 +86,29 @@ export default function EventDetails() {
                 {event.description}
               </Typography>
             </Box>
+            <Box className="mt10">
+              <Typography className="about_event_text" variant="h5">
+                Related To This Event
+              </Typography>
+            </Box>
+            <Box className="tag_main_sec">
+              {event.tags && event.tags.length > 0 ? (
+                event.tags.map((tag, i) => (
+                  <Typography key={i} className="event_detail_tag" variant="p">
+                    {tag}
+                  </Typography>
+                ))
+              ) : (
+                <Typography variant="body1">
+                  No tags available for this event.
+                </Typography>
+              )}
+            </Box>
+            <Box className="mt5">
+              <Typography className="about_event_text" variant="h5">
+                Package
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Container>

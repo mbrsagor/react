@@ -79,6 +79,7 @@ export default function EventForm() {
         .catch(() => setPriceOptions([]));
   },  []);
 
+  // Create new event handler
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);

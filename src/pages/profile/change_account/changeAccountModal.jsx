@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PasswordField from "../../../components/password";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -7,14 +6,14 @@ import Sheet from "@mui/joy/Sheet";
 import Modal from "@mui/joy/Modal";
 
 import axios from "../../../services/axiosConfig";
-import { passwordChangeURL } from "../../../services/api_service";
+import PhoneNumber from "../../../components/phoneNumber";
+import { changePhoneNumberURL } from "../../../services/api_service";
 import CustomLoader from "../../../components/customLoader";
 import CustomSnackbar from "../../../components/snackbar";
 
 // eslint-disable-next-line react/prop-types
-export default function PasswordChangeModal({ open, onClose }) {
-  const [old_password, setOldPassword] = useState("");
-  const [new_password, setNewPassword] = useState("");
+export default function ChangeAccountModal({ open, onClose }) {
+  const [phone, setPhone] = useState("");
   const [userData, setUserData] = useState("");
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
@@ -39,20 +38,21 @@ export default function PasswordChangeModal({ open, onClose }) {
     setLoading(true);
 
     try {
-      const response = await axios.put(passwordChangeURL(userData.user_id), {
-        old_password: old_password,
-        new_password: new_password,
+      const response = await axios.put(changePhoneNumberURL(userData.user_id), {
+        phone: phone,
       });
 
       if (response.status === 200) {
-        // Ensure correct response status
         setSnackbar({
           open: true,
           message: response.data.message,
           severity: "success",
         });
 
-        // Close the modal after success
+        // Reset input field
+        setPhone("");
+
+        // Close modal after success
         setTimeout(() => {
           onClose();
         }, 1000); // Short delay to allow the message to be seen
@@ -80,7 +80,10 @@ export default function PasswordChangeModal({ open, onClose }) {
       aria-describedby="modal-desc"
       className="password_change_modal_section"
       open={open}
-      onClose={onClose} // Close modal when user clicks outside
+      onClose={() => {
+        setPhone(""); // Clear phone field when closing
+        onClose();
+      }}
     >
       <Sheet variant="outlined" className="password_change_modal">
         <Typography
@@ -88,25 +91,19 @@ export default function PasswordChangeModal({ open, onClose }) {
           id="modal-title"
           variant="h6"
         >
-          Change Password
+          Change Account
         </Typography>
         <Box className="mb10 mt6">
           <Typography className="change_pass_desc" variant="body1">
-            Enter your current password followed by your new password. Ensure
-            your new password is strong and secure.
+            Changing your phone number will update your sign-in phone. Please
+            ensure you want to proceed before making this change.
           </Typography>
         </Box>
         <form onSubmit={handleSubmit}>
           <Box className="mb10 mt5">
-            <PasswordField
-              label="Enter current password"
-              onChange={(event) => setOldPassword(event.target.value)}
-            />
-          </Box>
-          <Box className="mb10">
-            <PasswordField
-              label="Enter new password"
-              onChange={(event) => setNewPassword(event.target.value)}
+            <PhoneNumber
+              value={phone}
+              onChange={(newPhone) => setPhone(newPhone)}
             />
           </Box>
           <Button type="submit" className="app_btn" variant="contained">

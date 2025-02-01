@@ -16,11 +16,16 @@ import Guard from "./pages/guard/guards/guard";
 import Profile from "./pages/profile/profile";
 import ProfileUpdate from "./pages/profile/profile_update/profileUpdate";
 // Categories all pages
+import BulkRegistration from "./pages/bulk_reg/bulkRegistration";
+// import QRScanner from "./pages/bulk_reg/QRScanner";
+// Categories all pages
 import Categories from "./pages/category/category_lv/categories";
 // Prices all pages
 import Prices from "./pages/ticket_price/price_lv/prices";
 // packages all pages
 import PackageList from "./pages/package/package_lv/packages";
+// Payment history
+import PaymentHistoryLv from "./pages/payment_history/paymentHistoryLv";
 // Event all pages
 import EventListPage from "./pages/event/event_lv/event_list_page";
 import EventDetails from "./pages/event/event_details/event_detail";
@@ -37,6 +42,7 @@ export default function App() {
           <Route path="/home" element={<ProtectedRoute> <Homepage /></ProtectedRoute>}/>
           <Route path="/prices" element={<ProtectedRoute> <Prices /></ProtectedRoute>}/>
           <Route path="/categories" element={<ProtectedRoute> <Categories /></ProtectedRoute>}/>
+          <Route path="/bulk-reg" element={<ProtectedRoute> <BulkRegistration /></ProtectedRoute>}/>
           <Route path="/packages" element={<ProtectedRoute> <PackageList /></ProtectedRoute>}/>
           <Route path="/create-event" element={<ProtectedRoute> <CreateEvent /></ProtectedRoute>}/>
           <Route path="/events" element={<ProtectedRoute> <EventListPage /></ProtectedRoute>}/>
@@ -46,6 +52,7 @@ export default function App() {
           <Route path="/guard" element={<ProtectedRoute> <Guard /></ProtectedRoute>}/>
           <Route path="/profile" element={<ProtectedRoute> <Profile /></ProtectedRoute>}/>
           <Route path="/profile_update/:id" element={<ProtectedRoute> <ProfileUpdate /></ProtectedRoute>}/>
+          <Route path="/payment-history" element={<ProtectedRoute> <PaymentHistoryLv /></ProtectedRoute>}/>
         </Route>
         {/* public route */}
         <Route path="signin" element={<SignIn />} />

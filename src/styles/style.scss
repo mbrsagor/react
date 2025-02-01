@@ -884,6 +884,56 @@ Event components
 }
 
 /*======================
+    password change modal
+=======================*/
+.password_change_modal_section {
+    margin-top: 20px;
+    .change_pass_desc {
+        font-weight: 600;
+    }
+    .password_change_modal {
+        margin: 10px;
+        padding: 20px;
+        border-radius: 15px;
+    }
+}
+
+/*======================
+    Delete Account
+=======================*/
+.delete_account {
+    text-align: end;
+    margin-top: 20px;
+    button {
+        background: $primary_color;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 15px;
+        margin-right: 10px;
+        text-transform: capitalize;
+        font-weight: 700;
+    }
+}
+
+/*======================
+  Bulk registration
+=======================*/
+.bulk_reg_sec {
+    padding: 20px;
+    margin-top: 50%;
+}
+
+.tag_main_sec {
+    margin-top: 10px;
+}
+.event_detail_tag {
+    border: 1px solid $input_border_color;
+    padding: 8px 10px;
+    border-radius: 10px;
+    margin: 5px !important;
+}
+
+/*======================
     404 page
 =======================*/
 .page_404{ 
