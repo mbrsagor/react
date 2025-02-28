@@ -147,15 +147,21 @@ a {
     }
 }
 
-.navigation_bar_sec .Mui-selected {
-    color: $primary_color !important;
-     img {
-        color: $primary_color !important;
-    }
-}
 
 .navigation_bar_sec .MuiBottomNavigationAction-root {
     color: $menu_color !important;
+}
+/* Ensures labels are always visible */
+.MuiBottomNavigationAction-root .MuiBottomNavigationAction-label {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+/* Fixes positioning of label */
+.MuiBottomNavigationAction-root {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
 }
 
 /*======================
@@ -279,6 +285,11 @@ a {
 
 .search-emoji {
     display: none;
+}
+
+// Slider
+.slick-prev, .slick-next {
+    display: none !important;
 }
 
 /*======================
@@ -478,7 +489,7 @@ a {
 
 .parent_sec {
     padding: 8px;
-    overflow: scroll !important;
+    // overflow: scroll !important;
     margin: 70px 0;
 }
 
@@ -486,17 +497,20 @@ a {
 /*======================
     Header & Toolbar
 =======================*/
+.MuiAppBar-root {
+    background: $default_text_color !important;
+    padding-bottom: 10px;
+}
 
 .app_bg {
     color: $primary_color !important;
-    background: transparent !important;
     box-shadow: none !important;
 }
 
 .header_top_section {
     display: flex !important;
     justify-content: space-between;
-    padding: 10px !important;
+    margin-top: 10px;
     z-index: 999;
     background: $default_text_color !important;
     .header_wlc_text {
@@ -506,6 +520,7 @@ a {
     }
     .user_name {
         line-height: 17.20px !important;
+        font-weight: 600;
     }
 }
 // Main bottom section
@@ -618,7 +633,7 @@ Package components
 .package_modal {
     position: absolute;
     left: 50%;
-    top: 40%;
+    top: 45%;
     transform: translate(-50%, -50%);
     width: 370px;
     box-shadow: 24;
@@ -659,6 +674,31 @@ Package components
             display: block;
             padding: 0;
             margin-right: 10px
+        }
+    }
+}
+.event_details_package_sec {
+    display: grid;
+    .single_package {
+        padding: 10px;
+        border: 1px solid $input_border_color;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        grid-gap: 10px;
+        .package_name {
+            font-weight: 600;
+            color: $black_color;
+            font-size: 18px;
+        }
+        .package_price {
+             font-weight: 600;
+            color: $black_color;
+            font-size: 17px;
+            display: flex;
+            align-items: end
+        }
+        .description {
+            text-align: justify;
         }
     }
 }
@@ -748,6 +788,56 @@ Event components
     }
 }
 
+.favoriteEventModal {
+    position: absolute;
+    // left: 0%;
+    right: -10%;
+    top: 10%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    box-shadow: 24;
+    padding: 15px;
+    background: $default_text_color;
+    border-radius: 15px;
+    .fav_event {
+        font-weight: 600;
+        color: $primary_color;
+        text-align: right;
+    }
+}
+
+.single_favorite_box {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    .favorite_image img {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+    }
+    .favorite_text {
+        margin-top: 10px;
+        .title {
+            font-weight: 600;
+            color: $black_color;
+        }
+        .favorite_btn {
+            display: flex;
+            justify-content: space-between;
+            .btn {
+                color: $black_color;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+        }
+    }
+}
+
 /* ================
 Event Guard
 ===================*/
@@ -816,6 +906,61 @@ Event Guard
     padding: 10px;
 }
 
+.gard_dashboard_card {
+    .single_card {
+        margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid $black_color;
+        border-radius: 20px;
+        box-shadow: 3px 2px 5px rgba(0, 0, 0, 0);
+        .counter {
+            padding: 10px 15px;
+        }
+    }
+}
+
+.running_events {
+    margin-top: 15px;
+    .running_event_title {
+        font-weight: 600;
+        color: $primary_color;
+    }
+    .single_running_event {
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        grid-gap: 10px;
+        margin-top: 10px;
+        border: 1px solid $black_color;
+        border-radius: 20px;
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+        .event_info {
+            padding: 10px;
+            .event_title {
+                font-weight: 500;
+                color: $black_color;
+                font-size: 18px;
+                font-weight: 800;
+            }
+            .scan_qr {
+                display: flex;
+                justify-content: right;
+                align-items: right;
+                button {
+                    color: $black_color;
+                    border-radius: 15px;
+                    font-size: 15px;
+                    border: 1px solid $black_color;
+                }
+            }
+        }
+    }
+}
+
 .events_card {
     img {
         width: 100%;
@@ -871,6 +1016,14 @@ Event Guard
                 display: inline-block !important;
             }
         }
+    }
+}
+
+.company_info {
+    display: flex;
+    .company_name {
+        margin-left: 10px;
+        margin-top: 10px;
     }
 }
 
@@ -941,7 +1094,270 @@ Event Guard
         margin-top: 10px;
     }
 }
-
+ // Purpose event
+.parent_purchase {
+    // position: relative;
+    .purchase_event_sec {
+        background: $primary_color;
+        position: fixed;
+        bottom: 0;
+        z-index: 99999;
+        width: 100%;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        z-index: 9999999;
+        .purchase_event_main {
+            display: flex;
+            grid-gap: 10px;
+            justify-content: space-between;
+            .get_ticket_sec {
+                button {
+                    background: $primary_color;
+                    color: $default_text_color;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 10px 20px;
+                    text-transform: capitalize;
+                    font-weight: 600;
+                    font-size: 20px;
+                    border: 1px solid $default_text_color;
+                    border-radius: 15px;
+                }
+            }
+            .qnt_price_sec {
+                // margin-left: 35px;
+                .qnt_btn {
+                    margin-top: 10px;
+                    button {
+                        color: $default_text_color;
+                        border: 1px $default_border_color solid;
+                    }
+                    .qnt {
+                        color: $default_text_color;
+                        font-size: 20px;
+                        font-size: 800;
+                        margin: 0 5px;
+                    }
+                }
+                .price {
+                    margin-top: 15px;
+                    font-weight: 600;
+                    color: $default_text_color;
+                }
+            }
+        }
+    }
+}
+.sponsor_detail_package_sec {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    margin-bottom: 20px;
+    .single_package {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid $black_color;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        .package_name {
+            font-weight: 600;
+            color: $primary_color;
+            margin-right: 5px;
+        }
+        .package_price {
+            font-weight: 600;
+            color: $primary_color;
+        }
+    }
+}
+// Guard assign event
+.assign_event {
+    .single_assign_event {
+        border: 1px solid $black_color;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        img {
+            width: 100%;
+            height: 200px;
+            border-radius: 20px;
+        }
+        .event_content {
+            padding: 10px;
+            .event_title {
+                font-weight: 600;
+                color: $primary_color;
+                font-size: 18px;
+            }
+            .event_duration {
+                color: $black_color;
+                font-size: 17px;
+                font-weight: 600;
+            }
+            .date {
+                font-weight: 500;
+            }
+            .duration {
+                .address {
+                    display: flex;
+                    margin-top: 10px;
+                }
+            }
+        }
+        .scan_qr {
+            display: flex;
+            justify-content: end;
+            margin-top: 10px;
+            button {
+                color: $black_color;
+                font-weight: 800;
+                font-size: 17px;
+                border: 1px solid $black_color;
+                border-radius: 15px;
+                padding: 7px 10px;
+            }
+        }
+    }
+}
+// Scan QR code:
+.scan_qr_code_sec {
+    text-align: center;
+    .event_title {
+        font-weight: 800;
+        color: $primary_color;
+        margin-bottom: 20px;
+    }
+    .scan_qr_code_text {
+        font-weight: 800;
+        color: $price_list_border;
+    }
+    .scan_qr_code {
+        color: $black_color;
+        font-weight: 800;
+    }
+    svg {
+        width: 155px;
+        height: 155px;
+        margin-bottom: 20px;
+    }
+    .verify_qr_area {
+        .verify_qr_input {
+            width: 100%;
+            margin-top: 12px;
+            margin-bottom: 15px;
+        }
+    }
+}
+/*======================
+    Payment setting
+=======================*/
+.payment_add_modal {
+    position: absolute;
+    left: 50%;
+    bottom: -18%;
+    transform: translate(-50%, -50%);
+    width: 370px;
+    padding: 15px;
+    background: $default_text_color;
+    border-radius: 15px;
+    .create_package_title {
+        font-weight: 800;
+        color: $primary_color;
+        margin-bottom: 15px;
+    }
+    .account_tab_sec {
+        border-bottom: 1px solid $input_border_color;
+    }
+    .MuiTabs-flexContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+    .Mui-selected {
+        color: $black_color !important;
+    }
+    .MuiTabs-indicator {
+        background-color: $primary_color !important;
+    }
+    .MuiTabPanel {
+        padding: 0 !important;
+    }
+    .account_tab_panel {
+        padding: 0;
+        margin-top: 15px;
+    }
+    .card_info {
+        display: flex;
+        gap: 15px;
+    }
+}
+// Method to display
+.card_list_section {
+    .account_title {
+        font-weight: 600;
+        color: $primary_color;
+        margin-bottom: 10px;
+        font-size: 17px;
+    }
+    .card_info {
+        border: 1px solid $input_border_color;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        .card_with_icon {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            color: $black_color;
+        }
+        .card_icon {
+            img {
+                width: 100%;
+                margin-top: 25px;
+            }
+            svg {
+                margin-top: 25px;
+            }
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            margin-left: 15px;
+        }
+    }
+}
+.payment_method_selected_modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 370px;
+    padding: 15px;
+    background: $default_text_color;
+    border-radius: 15px;
+    .MuiTabPanel {
+        padding: 0 !important;
+    }
+    .MuiTabs-flexContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+    .Mui-selected {
+        color: $black_color !important;
+    }
+    .MuiTabs-indicator {
+        background-color: $primary_color !important;
+    }
+    .MuiTabPanel {
+        padding: 0 !important;
+    }
+}
 /*======================
     profile component
 =======================*/
@@ -1022,6 +1438,125 @@ Event Guard
     }
 }
 
+
+/*======================
+  Payment success
+=======================*/
+.payment_success_header {
+    text-align: center;
+    padding: 20px;
+    font-weight: 800;
+    color: $black_color;
+    .purchase_title {
+        color: $primary_color;
+        font-size: 20px;
+        font-weight: 800;
+    }
+    svg {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 10px;
+        color: $primary_color;
+    }
+}
+.payment_success_body {
+    .title {
+        color: $primary_color;
+        font-size: 20px;
+        font-weight: 800;
+    }
+}
+.purchase_invoice_sec {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/*======================
+   Sponsor homepage
+=======================*/
+.sponsor_search_bar .MuiOutlinedInput-root {
+  border-radius: 15px;
+}
+.single_event_area {
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    .event_thumb img {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+    }
+    .event_info {
+        .date {
+            font-size: 15px;
+        }
+        .title {
+            font-size: 18px;
+            color: $black_color;
+            font-weight: 600;
+        }
+        .event_bottom_sec {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .company_name {
+                color: $input_border_color;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.sponsor_event_list {
+    margin-top: 10px;
+    .event_list_area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        .title {
+            font-size: 20px;
+            color: $primary_color;
+            font-weight: 600;
+        }
+        .more {
+            color: $black_color;
+            font-size: 18px;
+        }
+    }
+    .slick-track {
+        display: flex !important;
+        gap: 10px;
+    }
+}
+
+.single_host_section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    align-items: center;
+    // border: 1px solid $black_color;
+    padding: 15px 0;
+    img {
+        width: 100%;
+    }
+    .follow_btn {
+        margin-top: 10px;
+        padding: 10px 25px;
+        border-radius: 10px;
+        color: $black_color;
+        font-weight: 600;
+        border: 1px solid $black_color;
+    }
+}
+.single_host_area {
+    border: 1px solid $black_color;
+    border-radius: 10px;
+}
+
+
 /*======================
     password change modal
 =======================*/
@@ -1084,7 +1619,7 @@ Event Guard
 =======================*/
 .bulk_reg_sec {
     padding: 20px;
-    margin-top: 50%;
+    margin-top: 20%;
 }
 
 .tag_main_sec {
@@ -1095,6 +1630,15 @@ Event Guard
     padding: 8px 10px;
     border-radius: 10px;
     margin: 5px !important;
+}
+.bulk_reg_qr_code {
+    max-width: 200px;
+    margin: auto;
+    svg {
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
 }
 
 /*======================
@@ -1138,6 +1682,27 @@ Event Guard
     display: flex;
     flex-direction: column;
     box-shadow: 5px 4px 8px $default_border_color;
+    .tranID {
+        font-weight: 600;
+        color: $black_color;
+        font-size: 17px;
+    }
+    .tranID_copy {
+        display: flex;
+        justify-content: space-between;
+        .tran_text {
+            font-weight: 600;
+            color: $black_color;
+            font-size: 17px;
+        }
+    }
+    .net_amount {
+        .amount {
+            font-weight: 600;
+            color: $primary_color;
+            font-size: 20px;
+        }
+    }
     .tranID_row {
         display: flex;
         justify-content: space-between;
@@ -1230,6 +1795,211 @@ Event Guard
     }
 }
 
+.ticket_modal {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    width: 370px;
+    box-shadow: 24;
+    padding: 15px;
+    background: $default_text_color;
+    border-radius: 15px;
+}
+
+.modal_main_qr_sec {
+    text-align: center;
+    .ticket_number {
+        font-weight: 600;
+        color: $primary_color;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    .ready_for_scan {
+        font-weight: 600;
+        color: $black_color;
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-align: left;
+        padding-left: 10px;
+        border: 1px solid $black_color;
+        padding: 5px;
+        width: max-content;
+        border-radius: 10px;
+    }
+    .copay_sec {
+        text-align: left;
+        padding: 10px 0;
+        .copy_title {
+            font-weight: 600;
+            color: $black_color;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid $black_color;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    }
+    .hidden_link {
+        display: none;
+    }
+}
+
+/*======================
+    My Hosts
+=======================*/
+.host_parent_sec {
+    padding: 10px;
+    border: 1px solid $black_color;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    // box-shadow: 1px 1px 1px 1px $black_color;
+    .host_lv {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-gap: 15px;
+        .avatar {
+            width: 100px;
+            height: 100px;
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .host_info {
+            .follow_btn_sec {
+                text-align: right;
+            }
+            .name {
+                font-weight: 600;
+                color: $black_color;
+                font-size: 18px;
+            }
+            .total_followed {
+                font-size: 16px;
+            }
+            .date {
+                font-weight: 500;
+                color: $black_color;
+                font-size: 15px;
+                display: block;
+            }
+            .btn {
+                background: transparent;
+                box-shadow: none;
+                color: $black_color !important;
+                text-transform: capitalize;
+                font-weight: 600;
+                font-size: 16px;
+                padding: 8px 15px;
+                border-radius: 15px;
+                border: 1px solid $black_color;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+.host_top_sec {
+    text-align: center;
+    .name {
+        font-weight: 600;
+        color: $primary_color;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    .host_avatar {
+        width: 100px;
+        height: 100px;
+        margin: auto;
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+}
+.host_bottom_sec {
+    margin-top: 15px;
+}
+
+.host_tab {
+    .tab_divider {
+        border-bottom: 1px solid $input_border_color;
+        .MuiTabs-flexContainer  {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    .MuiTab-root {
+        color: $black_color !important; /* Change to your desired color */
+        font-weight: 600 !important;
+    }
+    .MuiTab-root.Mui-selected {
+        border-bottom: 2px solid $primary_color !important; /* Change to your desired color */
+    }
+}
+.tab_list {
+    display: flex;
+    justify-content: space-between;
+}
+.host_detail_sec {
+    .user_info {
+        font-size: 18px;
+    }
+}
+
+/*======================
+    Ticket
+=======================*/
+.get_ticket_sec {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    gap: 10px;
+}
+.single_ticket_sec {
+    padding: 5px;
+    border: 1px solid $black_color;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    .ticket {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-gap: 10px;
+        .qr_code {
+            margin-top: -30px;
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .ticket_info {
+            .ticket_number {
+                font-weight: 600;
+                color: $primary_color;
+                font-size: 18px;
+            }
+            .ticket_link {
+                font-size: 18px;
+            }
+        }
+    }
+    .ticket_bottom {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        .ticket_status {
+            font-weight: 600;
+            color: $black_color;
+            font-size: 16px;
+            border: 1px solid $black_color;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    }
+}
 /*======================
     404 page
 =======================*/
@@ -1262,5 +2032,3 @@ Event Guard
     
     .content_box_404{margin-top:-50px;}
 }
-
-

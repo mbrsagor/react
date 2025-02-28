@@ -1,5 +1,6 @@
-export const BASE_URL = "http://127.0.0.1:8000";
+// export const BASE_URL = "http://127.0.0.1:8000";
 // export const BASE_URL = "http://18.214.74.178";
+export const BASE_URL = "http://107.23.170.41";
 export const apiURL = "/api/v1";
 
 export const endpoint = `${BASE_URL}${apiURL}`;
@@ -58,5 +59,16 @@ export const purchaseEventDetailURL = (id) => `${sponsor}/purchase-event/${id}/`
 export const PurchaseEventListURL = `${sponsor}/purchase-event/`;
 export const HostListURL = `${sponsor}/hosts/`;
 export const SponsorGetTicketURL = (event, pkg) => `${sponsor}/tickets/?event=${event}&package=${pkg}`;
+
+// Guard endpoints
+export const GuardHomeURL = `${event}/guard-dashboard/`;
+export const GuardAssignEvents = `${event}/guard-assign-events/`;
+export const VerifyTicket = (eventID, ticket_number) => `${event}/verify-ticket/?event_id=${eventID}&ticket_number=${ticket_number}`;
+
 // Ticket endpoints
 export const BulkTicketURL = `${ticket}/bulk-ticket/`;
+// Payment endpoints
+export const AddAccountURL = `${event}/add-bank-card-account/`;
+export const MyAccountsURL = (customerID) => `${event}/stripe-customer-accounts/?stripe_customer_id=${customerID}`;
+export const RemoveAccountURL = () => `${event}/stripe-delete-account/`;
+export const purchaseEventPackageURL = `${event}/stripe-regular-payment/`;
