@@ -61,7 +61,7 @@ import Settings from "./pages/settings/settings";
 // Feedback Settings
 import Feedback from "./pages/settings/feedback/feedback";
 // Payment settings
-import PaymentSetting from "./pages/settings/payment_setting/paymentSetting";
+// import PaymentSetting from "./pages/settings/payment_setting/paymentSetting";
 // Sponsor Host
 import MyHosts from "./pages/host/myHos";
 import HostDetails from "./pages/host/hostDetails";
@@ -104,7 +104,7 @@ export default function App() {
           <Route path="/sponsor-payment-history" element={<ProtectedRoute> <SponsorPaymentHistory /></ProtectedRoute>}/>
           <Route path="/settings" element={<ProtectedRoute> <Settings /></ProtectedRoute>}/>
           <Route path="/scan-qr/:event_id" element={<ProtectedRoute> <ScanTicket /></ProtectedRoute>}/>
-          <Route path="/payment-setting" element={<ProtectedRoute> <PaymentSetting /></ProtectedRoute>}/>
+          {/* <Route path="/payment-setting" element={<ProtectedRoute> <PaymentSetting /></ProtectedRoute>}/> */}
           <Route path="/feedback" element={<ProtectedRoute> <Feedback /></ProtectedRoute>}/>
           <Route path="/hosts" element={<ProtectedRoute> <MyHosts /></ProtectedRoute>}/>
           <Route path="/purchase-success" element={<ProtectedRoute> <PurchaseSuccess /></ProtectedRoute>}/>
