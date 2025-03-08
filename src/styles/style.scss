@@ -1034,8 +1034,12 @@ Event Guard
     }
 }
 
+.sponsor_purchase_event_details {
+    padding: 0 10px 180px 10px !important;
+}
+
 .event_details_sec {
-    padding: 15px;
+    padding: 15px 5px 3px 8px;
     img {
         width: 100%;
         height: 200px;
@@ -1082,9 +1086,8 @@ Event Guard
         }
         .venue {
             padding: 5px;
-            svg {
-                position: relative;
-                top: 10px;
+            .venue_child {
+                display: flex;
             }
         }
     }
@@ -1099,6 +1102,7 @@ Event Guard
     }
     .event_content {
         margin-top: 10px;
+        text-align: justify;
     }
 }
  // Purpose event
@@ -1158,8 +1162,8 @@ Event Guard
 }
 .sponsor_detail_package_sec {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 5px;
+    // grid-template-columns: 1fr 1fr;
+    // grid-gap: 5px;
     margin-bottom: 10px;
     .single_package {
         display: flex;
@@ -1982,6 +1986,19 @@ Event Guard
     .user_info {
         font-size: 18px;
     }
+}
+
+/*======================
+    Payment history
+=======================*/
+.transaction_filter_area {
+    padding: 0 10px;
+    // .transaction_column2 {
+    //     margin-top: 10px;
+    //     display: flex;
+    //     align-items: center;
+    //     gap: 10px;
+    // }
 }
 
 /*======================

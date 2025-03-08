@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
@@ -9,12 +10,15 @@ import Avatar from "@mui/material/Avatar";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 
+import { motion } from "framer-motion";
+
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 import axios from "../../../services/axiosConfig";
 import ToolsBar from "../../../components/tools_bar";
 import CustomSnackbar from "../../../components/snackbar";
+import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 import { EventDetailURL, CreatePaymentIntent, PurchaseEventPackageURL } from "../../../services/api_service";
 
 const ENV = import.meta.env.MODE; // Vite automatically sets this
@@ -164,6 +168,7 @@ export default function SponsorEventDetails() {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [pricePerUnit, setPricePerUnit] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [offset, setOffset] = useState(0);
   const navigate = useNavigate(); // Initialize the navigate function
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -196,9 +201,9 @@ export default function SponsorEventDetails() {
           severity: "success",
         });
         // Navigate to purchase-success route after successful purchase
-         navigate("/purchase-success", {
-           state: { purchaseData: response.data }, // Pass response.data as state
-         });
+        navigate("/purchase-success", {
+          state: { purchaseData: response.data }, // Pass response.data as state
+        });
       } else {
         setSnackbar({
           open: true,
@@ -252,16 +257,31 @@ export default function SponsorEventDetails() {
     setPricePerUnit(pack.unit_price);
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOffset((prev) => {
+        // Calculate new position and loop back when reaching the end
+        const newOffset = (prev - 220) % (packages.length * 220);
+        return newOffset;
+      });
+    }, 200);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [packages.length]); // Re-run when package list changes
+
   return (
     <React.Fragment>
       <CssBaseline />
       <Container className="content parent_purchase">
         <ToolsBar link="/sponsor-home/" title="Event Details" />
         <Box className="parent_sec">
-          <Box className="event_details_sec">
+          <Box className="event_details_sec sponsor_purchase_event_details">
             {loading && <CircularProgress />}
             <Box className="thumbnail-sec">
-              <img src={event.thumbnail} alt={event.title} />
+              <img
+                src={event.thumbnail || DefaultThumbnail}
+                alt={event.title}
+              />
             </Box>
             <Box className="event_info">
               <Typography className="event_title" variant="h6">
@@ -280,10 +300,12 @@ export default function SponsorEventDetails() {
                 <Typography className="about_event_text" variant="h5">
                   Event Venue
                 </Typography>
-                <PlaceIcon />
-                <Typography className="event_venue">
-                  {event.location}
-                </Typography>
+                <Box className="venue_child">
+                  <PlaceIcon />
+                  <Typography className="event_venue">
+                    {event.location}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
             <Box className="event_description">
@@ -294,32 +316,56 @@ export default function SponsorEventDetails() {
                 {event.description}
               </Typography>
             </Box>
-            <Box className="mt5">
+            <Box className="mt6">
               <Typography className="about_event_text" variant="h5">
                 Select Package
               </Typography>
             </Box>
-            <Box className="sponsor_detail_package_sec">
-              {packages.map((pack) => (
-                <Box
-                  key={pack.id}
-                  className={`single_package ${selectedPackage?.id === pack.id ? "selected" : ""}`}
-                  onClick={() => handlePackageSelection(pack)}
-                  style={{
-                    cursor: "pointer",
-                    border:
-                      selectedPackage?.id === pack.id
-                        ? "2px solid blue"
-                        : "1px solid gray",
-                    padding: "10px",
-                    margin: "5px",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <Typography>{pack.title}</Typography>
-                  <Typography>${pack.unit_price}</Typography>
-                </Box>
-              ))}
+
+            <Box
+              sx={{
+                overflow: "hidden", // Hides overflow for clean scrolling
+                width: "100%", // Ensures it fits the screen width
+              }}
+            >
+              <motion.div
+                className="sponsor_detail_package_sec"
+                drag="x"
+                dragConstraints={{
+                  left: -(packages.length * 220 - window.innerWidth + 40),
+                  right: 0,
+                }} // Auto adjusts for items
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  width: "max-content", // Ensures all items are inline
+                  cursor: "grab",
+                }}
+                whileTap={{ cursor: "grabbing" }}
+              >
+                {packages.map((pack) => (
+                  <motion.div
+                    key={pack.id}
+                    className={`single_package ${selectedPackage?.id === pack.id ? "selected" : ""}`}
+                    onClick={() => handlePackageSelection(pack)}
+                    whileTap={{ scale: 0.95 }}
+                    style={{
+                      cursor: "pointer",
+                      border:
+                        selectedPackage?.id === pack.id
+                          ? "2px solid blue"
+                          : "1px solid gray",
+                      padding: "10px",
+                      margin: "5px",
+                      borderRadius: "5px",
+                      minWidth: "200px", // Ensure each card is visible
+                    }}
+                  >
+                    <Typography>{pack.title}</Typography>
+                    <Typography>${pack.unit_price}</Typography>
+                  </motion.div>
+                ))}
+              </motion.div>
             </Box>
           </Box>
           <Box className="purchase_event_sec">

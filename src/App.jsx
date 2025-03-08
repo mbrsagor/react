@@ -44,6 +44,7 @@ import PackageList from "./pages/package/package_lv/packages";
 import SponsorPaymentHistory from "./pages/host/payment_history/SponsorPaymentHistory";
 // Host/company Payment history
 import PaymentHistoryLv from "./pages/payment_history/paymentHistoryLv";
+import TransactionHistoryFilter from "./pages/payment_history/filter/transactionHistoryFilter";
 // Event all pages
 import EventListPage from "./pages/event/event_lv/event_list_page";
 import SponsorEventList from "./pages/event/event_lv/sponsorEventList";
@@ -101,6 +102,7 @@ export default function App() {
           <Route path="/profile" element={<ProtectedRoute> <Profile /></ProtectedRoute>}/>
           <Route path="/profile_update/:id" element={<ProtectedRoute> <ProfileUpdate /></ProtectedRoute>}/>
           <Route path="/payment-history" element={<ProtectedRoute> <PaymentHistoryLv /></ProtectedRoute>}/>
+          <Route path="/filter-transaction" element={<ProtectedRoute> <TransactionHistoryFilter /></ProtectedRoute>}/>
           <Route path="/sponsor-payment-history" element={<ProtectedRoute> <SponsorPaymentHistory /></ProtectedRoute>}/>
           <Route path="/settings" element={<ProtectedRoute> <Settings /></ProtectedRoute>}/>
           <Route path="/scan-qr/:event_id" element={<ProtectedRoute> <ScanTicket /></ProtectedRoute>}/>

@@ -18,7 +18,7 @@ export default function PaymentHistoryModal({ open, onClose }) {
       >
         <Box className="payment_bottom_modal_sec">
           <Box className="modal_menus">
-            <Link className="menu_item" to="#">
+            <Link className="menu_item" to="/filter-transaction">
               <Box>
                 <TuneOutlinedIcon />
               </Box>
