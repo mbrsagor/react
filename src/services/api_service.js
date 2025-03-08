@@ -33,6 +33,7 @@ export const passwordChangeConfirmURL = `${user}/password-change-confirm/`;
 export const passwordChangeURL = (id) => `${user}/change-password/${id}/`;
 export const changePhoneNumberURL = (id) => `${user}/change-phone/${id}/`;
 export const deleteAccountURL = (id) => `${user}/account-delete/${id}/`;
+export const ProfileSwitchURL = (id) => `${user}/change-role/${id}/`;
 
 // Host/Company endpoints
 export const SponsorHome = `${event}/company-home-api/`;

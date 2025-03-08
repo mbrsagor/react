@@ -10,6 +10,7 @@ import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
 // import CurrencyRubleOutlinedIcon from "@mui/icons-material/CurrencyRubleOutlined";
+import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import EditLocationAltOutlinedIcon from "@mui/icons-material/EditLocationAltOutlined";
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
@@ -19,7 +20,10 @@ import PasswordChangeModal from "./password_change/passwordChangeModal";
 import ChangeAccountModal from "./change_account/changeAccountModal";
 import DeleteAccount from "./delete_account/deleteAccount";
 import CustomSnackbar from "../../components/snackbar";
-import { BASE_URL } from "../../services/api_service";
+
+// API calls 
+import axios from "../../services/axiosConfig";
+import { BASE_URL, ProfileSwitchURL } from "../../services/api_service";
 
 export default function ItemList() {
   const [userData, setUserData] = useState("");
@@ -81,6 +85,51 @@ export default function ItemList() {
     }
   }, []);
 
+
+  // Role change or profile switch handler
+  const handleRoleChange = async () => {
+    try {
+      const user_id = userData.user_id;
+
+      // Switch profile logic
+      const newProfileId = userData.role === 3 ? 4 : 3; // Switch between 3 and 4
+
+      const response = await axios.put(ProfileSwitchURL(user_id), {
+        role: newProfileId, // Send the new role/profile ID
+      });
+
+      if (response.status === 200) {
+        setSnackbar({
+          open: true,
+          message: response.data.message,
+          severity: "success",
+        });
+        setUserData({ ...userData, role: newProfileId }); // Update the userData with the new profile ID
+        // and then sign our and clear token
+        localStorage.removeItem("token");
+        localStorage.clear();
+
+        // Navigate after state update
+        setTimeout(() => {
+          navigate("/signin");
+        }, 100);
+      } else {
+        setSnackbar({
+          open: true,
+          message: response.data.message,
+          severity: "error",
+        });
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Failed to change role",
+        error,
+        severity: "error",
+      });
+    }
+  };
+
   return (
     <Container className="profile_item_lv">
       <Link to={`/profile_update/${userData.user_id}`}>
@@ -89,6 +138,14 @@ export default function ItemList() {
           <Typography variant="p">Edit Profile </Typography>
         </Box>
       </Link>
+      {(userData.role === 3 || userData.role === 4) && (
+      <Link to="#" onClick={() => handleRoleChange(true)}>
+        <Box className="item">
+          <SwitchAccountIcon />
+          <Typography variant="p">Profile Switch</Typography>
+        </Box>
+      </Link>
+        )}
       <Link to="#" onClick={() => setModalOpen(true)}>
         <Box className="item">
           <KeyOutlinedIcon />
