@@ -685,7 +685,10 @@ Package components
     }
 }
 .event_details_package_sec {
-    display: grid;
+    // display: grid;
+    // grid-template-columns: 1fr 1fr;
+    // grid-gap: 10px;
+    padding-bottom: 10px;
     .single_package {
         padding: 10px;
         border: 1px solid $input_border_color;
@@ -792,6 +795,25 @@ Event components
         margin-left: 5px;
         margin-bottom: 8px;
         margin-top: -7px !important;
+    }
+    // show location
+    .location_list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        width: 100%;
+        background: $default_text_color;
+        border: 1px solid $default_text_color;
+        border-top: none !important;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto !important;
+        .single_location {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid $menu_color;
+        }
     }
 }
 
@@ -1181,6 +1203,9 @@ Event Guard
         .package_price {
             font-weight: 600;
             color: $primary_color;
+        }
+        button {
+            background: $primary_color;
         }
     }
 }
@@ -1993,12 +2018,39 @@ Event Guard
 =======================*/
 .transaction_filter_area {
     padding: 0 10px;
-    // .transaction_column2 {
-    //     margin-top: 10px;
-    //     display: flex;
-    //     align-items: center;
-    //     gap: 10px;
-    // }
+    .transaction_column2 {
+        margin-top: 10px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.transaction_filter_lv {
+    position: absolute;
+    margin: auto;
+    height: 400px;
+    overflow: scroll;
+}
+
+/*======================
+    Generate report
+=======================*/
+.generate_report {
+    padding: 0 30px;
+    .report_title {
+        font-weight: 600;
+        color: $primary_color;
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .download_report_btn {
+        font-size: 20px;
+    }
+    .mb10 {
+        margin-bottom: 10px;
+    }
 }
 
 /*======================

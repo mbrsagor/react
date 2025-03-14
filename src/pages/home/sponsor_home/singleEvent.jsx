@@ -64,16 +64,20 @@ export default function SingleEvent({link, thumbnail, date, title, company_name,
           </Link>
         </Box>
         <Box className="event_info">
-          <Typography className="date" variant="body1">
-            {date}
-          </Typography>
-          <Typography className="title" variant="body1">
-            {title}
-          </Typography>
-          <Box className="event_bottom_sec">
-            <Typography className="company_name" variant="body1">
-              {company_name}
+          <Link to={link}>
+            <Typography className="date" variant="body1">
+              {date}
             </Typography>
+            <Typography className="title" variant="body1">
+              {title}
+            </Typography>
+          </Link>
+          <Box className="event_bottom_sec">
+            <Link to={link}>
+              <Typography className="company_name" variant="body1">
+                {company_name}
+              </Typography>
+            </Link>
             <Typography onClick={handleSubmit} className="save" variant="body1">
               <FavoriteBorderOutlinedIcon />
             </Typography>

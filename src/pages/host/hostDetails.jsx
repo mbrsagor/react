@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import { Typography } from "@mui/material";
@@ -13,8 +13,7 @@ import { HostDetailsURL } from "../../services/api_service";
 
 export default function HostDetails() {
   // Model
-  const location = useLocation();
-  const user_id = location.state?.host;
+  const { id } = useParams(); // Extract id from route parameters
   const [host, setHost] = useState([]);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -29,7 +28,7 @@ export default function HostDetails() {
   // Fetch profile information
   useEffect(() => {
     // Replace 1 with the actual host_id you want to fetch information about.
-    const endpoint = `${HostDetailsURL({ user_id })}?host_id=${user_id}`;
+    const endpoint = `${HostDetailsURL({ id })}?host_id=${id}`;
     axios
       .get(endpoint) // API call
       .then((response) => {
@@ -43,7 +42,7 @@ export default function HostDetails() {
           severity: "error",
         });
       });
-  }, [user_id]);
+  }, [id]);
 
   return (
     <React.Fragment>

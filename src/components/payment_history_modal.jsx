@@ -26,7 +26,7 @@ export default function PaymentHistoryModal({ open, onClose }) {
                 <Typography className="menu_item_text" variant="p"> Filter Transaction </Typography>
               </Box>
             </Link>
-            <Link className="menu_item" to="#">
+            <Link className="menu_item" to="/generate-report">
               <Box>
                 <PictureAsPdfOutlinedIcon />
               </Box>

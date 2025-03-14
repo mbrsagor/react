@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom"; // For getting URL parameters and navigation
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
@@ -31,12 +31,21 @@ const MenuProps = {
   },
 };
 
+
+const MAPBOX_ACCESS_TOKEN =
+  "sk.eyJ1IjoiZ2xvYmFsZHluYW1pY3NvbHV0aW9ucyIsImEiOiJjbTM3aHp6OGgwYTJwMm5yMXF6b3B0ZzJkIn0.F1aio-ONR5p9FJaun1PU_g"; 
+
 export default function EventUpdateForm() {
   const { id } = useParams(); // Get event ID from URL
   const [category, setCategory] = useState([]); // Initialize as an array
   const [priceOptions, setPriceOptions] = useState([]); // To store fetched packages
   const [packageOptions, setPackageOptions] = useState([]); // To store fetched packages
   const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [location, setLocation] = useState("");
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const inputRef = useRef(null);
 
   const [eventData, setEventData] = useState({
     title: "",
@@ -54,10 +63,22 @@ export default function EventUpdateForm() {
   });
 
   const handleInputChange = (e) => {
-    setEventData({
-      ...eventData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if (name === "tags") {
+      setEventData((prevData) => ({
+        ...prevData,
+        tags: value
+          .split(",") // Split by comma
+          .map((tag) => tag.trim()) // Remove spaces
+          .filter((tag) => tag.length > 0), // Remove empty values
+      }));
+    } else {
+      setEventData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   // messages
@@ -96,18 +117,18 @@ export default function EventUpdateForm() {
   // Fetch event data
   useEffect(() => {
     axios
-      .get(EventDetailURL(id)) // Pass id to EventDetailURL
+      .get(EventDetailURL(id))
       .then((response) => {
         if (response) {
-          //console.log(response.data.data);
           const event = response.data.data;
           setEventData({
             ...event,
             start_date: event.start_date,
             end_date: event.end_date,
-            packages: event.packages.map((pkg) => pkg.id), // Pre-select existing packages
+            packages: event.packages.map((pkg) => pkg.id),
             prices: event.prices.map((price) => price.id),
           });
+          setQuery(event.location || ""); // ✅ Set query state to fetched location
         }
       })
       .catch((error) => {
@@ -123,16 +144,15 @@ export default function EventUpdateForm() {
 
     // Create a copy of eventData
     const updatedData = { ...eventData };
-    // If no new thumbnail is uploaded, keep the existing one
-    if (!updatedData.thumbnail.startsWith("data:thumbnail")) {
-      delete updatedData.thumbnail; // Prevent overriding the existing image with empty data
+
+    // Only include thumbnail if a new one is selected
+    if (selectedThumbnail) {
+      updatedData.thumbnail = selectedThumbnail;
+    } else {
+      delete updatedData.thumbnail; // Remove it from the update request
     }
 
     try {
-      const updatedData = { ...eventData };
-      if (selectedThumbnail) {
-        updatedData.thumbnail = selectedThumbnail;
-      }
       const response = await axios.put(EventDetailURL(id), updatedData);
       if (response.data.status === "success") {
         setSnackbar({
@@ -173,6 +193,46 @@ export default function EventUpdateForm() {
     });
   };
 
+  const fetchSuggestions = async (query) => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_ACCESS_TOKEN}&autocomplete=true&limit=5`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.features) {
+        setSuggestions(data.features.map((place) => place.place_name));
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  };
+
+  const handleLocationInputChange = (event) => {
+    const value = event.target.value;
+    setQuery(value);
+    fetchSuggestions(value);
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    setQuery(suggestion); // ✅ Updates input field
+    setLocation(suggestion); // ✅ Ensures location is set for API submission
+    setEventData((prevData) => ({
+      ...prevData,
+      location: suggestion, // ✅ Updates eventData for form submission
+    }));
+    setSuggestions([]); // ✅ Clears suggestions after selection
+
+    if (inputRef.current) {
+      inputRef.current.focus(); // ✅ Keeps focus on input
+    }
+  };
+
   return (
     <React.Fragment>
       <Box className="create_event_form">
@@ -186,7 +246,7 @@ export default function EventUpdateForm() {
               Event Title
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="title"
               className="common_field_text"
               variant="outlined"
@@ -202,7 +262,7 @@ export default function EventUpdateForm() {
               Event Description
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="description"
               className="common_field_text"
               variant="outlined"
@@ -218,7 +278,7 @@ export default function EventUpdateForm() {
               Event Tag
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="tags"
               className="common_field_text"
               variant="outlined"
@@ -228,7 +288,7 @@ export default function EventUpdateForm() {
                 },
               }}
               onChange={handleInputChange}
-              value={eventData.tags}
+              value={eventData.tags.join(", ")} // Convert array to comma-separated string
             />
             <Typography className="event_tag_label" variant="body2">
               Event Tags Separated by Comma. E.G: Food, Travel
@@ -237,7 +297,7 @@ export default function EventUpdateForm() {
               Add Event Venue
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="location"
               className="common_field_text"
               variant="outlined"
@@ -246,14 +306,35 @@ export default function EventUpdateForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={handleInputChange}
-              value={eventData.location}
+              onChange={handleLocationInputChange}
+              value={query} // ✅ Ensures input field reflects current location
+              inputRef={inputRef}
             />
+
+            {suggestions.length > 0 && (
+              <ul className="location_list">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    className="single_location"
+                    key={index}
+                    onClick={() => handleSelectSuggestion(suggestion)}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f2f2f2")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#fff")
+                    }
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
             <Typography className="event_form_label" variant="p">
               Add Event Capacity
             </Typography>
             <TextField
-              label="Write Here"
+              placeholder="Write Here"
               name="capacity"
               className="common_field_text"
               variant="outlined"
@@ -338,7 +419,7 @@ export default function EventUpdateForm() {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Event Starting From"
+                placeholder="Event Starting From"
                 value={
                   eventData.start_date ? dayjs(eventData.start_date) : null
                 }
@@ -364,7 +445,7 @@ export default function EventUpdateForm() {
             </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateTimePicker
-                label="Event Ending From"
+                placeholder="Event Ending From"
                 value={eventData.start_date ? dayjs(eventData.end_date) : null}
                 onChange={(newValue) => {
                   setEventData((prevData) => ({

@@ -32,7 +32,7 @@ export default function Settings() {
         ) : userData.role === 5 ? (
           <ToolsBar link="/guard-home/" title="Settings" />
         ) : null}
-        <Box className="parent_sec pb80">
+        <Box className="parent_sec">
           <Box className="settings">
             {/* <Box className="app_list">
               <Typography className="app_setting_title" variant="p">

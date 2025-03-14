@@ -46,6 +46,7 @@ const FileDropZone = ({ onFilesChange, existingThumbnail }) => {
           backgroundImage: `url(${preview})`, // Always set background
           backgroundSize: "cover",
           backgroundPosition: "center",
+          borderRadius: "10px"
         }}
       >
         <input {...getInputProps()} />

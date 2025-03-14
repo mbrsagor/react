@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Container } from "@mui/material";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import Events from "./events";
@@ -47,16 +47,18 @@ export default function SponsorEventList() {
         <Box className="parent_sec pb80">
           {events && events.length > 0 ? (
             events.map((event) => (
-              <Link key={event.id} to={`/purchase-event-detail/${event.id}`}>
-                <Events
-                  banner={event.event.thumbnail}
-                  title={event.event.title}
-                  start_date={event.event.start_date}
-                  end_date={event.event.end_date}
-                  venue={event.event.location}
-                  tags={event.event.tags}
-                />
-              </Link>
+              // <Link key={event.id} to={`/purchase-event-detail/${event.id}`}>
+              <Events
+                key={event.id}
+                detail_link={`/purchase-event-detail/${event.id}`}
+                banner={event.event.thumbnail}
+                title={event.event.title}
+                start_date={event.event.start_date}
+                end_date={event.event.end_date}
+                venue={event.event.location}
+                tags={event.event.tags}
+              />
+              // </Link>
             ))
           ) : (
             <Typography className="no_data_text" variant="body">

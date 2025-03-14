@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { motion } from "framer-motion";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -9,6 +10,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import axios from "../../../services/axiosConfig";
 import ToolsBar from "../../../components/tools_bar";
 import { EventDetailURL } from "../../../services/api_service";
+import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 
 export default function EventDetails() {
   const [event, setEvent] = useState([]);
@@ -39,7 +41,10 @@ export default function EventDetails() {
         <Box className="parent_sec pb80">
           <Box className="event_details_sec">
             <Box className="thumbnail-sec">
-              <img src={event.thumbnail} alt={event.title} />
+              <img
+                src={event.thumbnail || DefaultThumbnail}
+                alt={event.title}
+              />
             </Box>
             <Box className="capacity_sec">
               <Box className="single_capacity_box">
@@ -111,24 +116,52 @@ export default function EventDetails() {
                 Package
               </Typography>
             </Box>
-            <Box className="event_details_package_sec">
-              {packages.length > 0 ? (
-                packages.map((pack) => (
-                  <Box key={pack.id} className="single_package">
-                    <Typography className="package_name" variant="body1">
-                      {pack.title}
-                    </Typography>
-                    <Typography className="package_price" variant="body1">
-                      ${pack.unit_price}
-                    </Typography>
-                    <Typography className="package_desc" variant="body1">
-                      {pack.description}
-                    </Typography>
-                  </Box>
-                ))
-              ) : (
-                <Typography variant="body">No Package Available</Typography>
-              )}
+            <Box
+              sx={{
+                overflow: "hidden",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              className="event_details_package_sec"
+            >
+              <motion.div
+                drag="x"
+                dragConstraints={{
+                  left: -(packages.length * 220 - window.innerWidth + 40),
+                  right: 0,
+                }}
+                style={{
+                  display: "flex",
+                  gap: "20px", // Adds spacing between slides
+                }}
+              >
+                {packages.length > 0 ? (
+                  packages.map((pack) => (
+                    <Box
+                      key={pack.id}
+                      className="single_package"
+                      sx={{
+                        minWidth: "300px", // Ensures only one item fits per slide
+                        maxWidth: "300px",
+                        flex: "0 0 auto", // Prevents resizing
+                      }}
+                    >
+                      <Typography className="package_name" variant="body1">
+                        {pack.title}
+                      </Typography>
+                      <Typography className="package_price" variant="body1">
+                        ${pack.unit_price}
+                      </Typography>
+                      <Typography className="package_desc" variant="body1">
+                        {pack.description}
+                      </Typography>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography variant="body">No Package Available</Typography>
+                )}
+              </motion.div>
             </Box>
           </Box>
         </Box>

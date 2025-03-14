@@ -72,7 +72,7 @@ export default function MyHosts() {
           {hosts.length > 0 ? (
             hosts.map((host) => (
               <Box key={host.id} className="host_parent_sec">
-                <Link to={`/host/${host.host}`} state={{ host: host.host }}>
+                <Link to={`/host/${host.host}`} state={{ host: host.id }}>
                   <Box className="host_lv">
                     <Box className="avatar">
                       <img src={host.avatar || Avatar} alt={host.host_name} />

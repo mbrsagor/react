@@ -3,13 +3,12 @@ import {
   IconButton,
   InputAdornment,
   FormControl,
-  InputLabel,
   OutlinedInput,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 // eslint-disable-next-line react/prop-types
-const PasswordField = ({ onChange, label = "Password" }) => {
+const PasswordField = ({ onChange, placeholder = "Password" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -20,19 +19,19 @@ const PasswordField = ({ onChange, label = "Password" }) => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
     if (onChange) {
-      onChange(event); // Call the parent's onChange function if provided
+      onChange(event);
     }
   };
 
   return (
     <FormControl variant="outlined" fullWidth>
-      <InputLabel htmlFor="password">{label}</InputLabel>
       <OutlinedInput
         id="password"
         className="custom_password_field"
         type={showPassword ? "text" : "password"}
         value={password}
         onChange={handlePasswordChange}
+        placeholder={placeholder} // Placeholder instead of label
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -44,7 +43,6 @@ const PasswordField = ({ onChange, label = "Password" }) => {
             </IconButton>
           </InputAdornment>
         }
-        label={label}
       />
     </FormControl>
   );

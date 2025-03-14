@@ -55,7 +55,11 @@ export default function SignIn() {
         }else if (userData.role === 5) {
           navigate("/guard-home");
         } else {
-          alert("Invalid user role. Please contact with the admin");
+          setSnackbar({
+            open: true,
+            message: "Invalid user role. Please contact with the admin.",
+            severity: "error",
+          });
         }
         setSnackbar({
           open: true,

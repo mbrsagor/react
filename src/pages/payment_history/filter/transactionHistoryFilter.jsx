@@ -13,7 +13,7 @@ export default function TransactionHistoryFilter() {
       <CssBaseline />
       <Container className="content">
         <ToolsBar link="/payment-history" title="Filter Transaction" />
-        <Box className="parent_sec pb80">
+        <Box className="parent_sec">
           <Box>
             <Filter />
           </Box>

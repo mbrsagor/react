@@ -7,7 +7,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import axios from "../../services/axiosConfig";
 import SingleEvent from "../home/sponsor_home/singleEvent";
@@ -17,13 +17,12 @@ import { EventFilterByHost } from "../../services/api_service";
 export default function HostDetailTab({name, email, phone, gender, city, zip, address, state}) {
   const [events, setEvents] = useState([]);
   const [value, setValue] = useState("1");
-  const location = useLocation();
-  const user_id = location.state?.host;
+  const { id } = useParams(); // Extract id from route parameters
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  var id = parseInt(user_id, 10); // convert to number
+  // var id = parseInt(user_id, 10); // convert to number
 
   // Fetching my events data
   useEffect(() => {

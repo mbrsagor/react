@@ -10,6 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import axios from "../../../services/axiosConfig";
 import ToolsBar from "../../../components/tools_bar";
 import { purchaseEventDetailURL } from "../../../services/api_service";
+import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 
 export default function PurchaseEventDetail() {
   const [event, setEvent] = useState([]);
@@ -50,7 +51,10 @@ export default function PurchaseEventDetail() {
         <Box className="parent_sec pb80">
           <Box className="event_details_sec">
             <Box className="thumbnail-sec">
-              <img src={event.thumbnail} alt={event.title} />
+              <img
+                src={event.thumbnail || DefaultThumbnail}
+                alt={event.title}
+              />
             </Box>
             <Box className="capacity_bottom_sec">
               <Typography className="event_time" variant="p">

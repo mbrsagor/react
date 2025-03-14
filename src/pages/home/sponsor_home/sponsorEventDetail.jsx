@@ -7,6 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import PlaceIcon from "@mui/icons-material/Place";
 import Avatar from "@mui/material/Avatar";
+import Modal from "@mui/material/Modal";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import ControlPointOutlinedIcon from "@mui/icons-material/ControlPointOutlined";
 
@@ -35,6 +36,17 @@ console.log("API Key:", publicKey);
 
 // Load Stripe public key
 const stripePromise = loadStripe(publicKey);
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
 
 // CheckoutForm Component
 // eslint-disable-next-line react/prop-types
@@ -170,6 +182,19 @@ export default function SponsorEventDetails() {
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const navigate = useNavigate(); // Initialize the navigate function
+  const [open, setOpen] = React.useState(false);
+  const [modalPackage, setModalPackage] = useState(null); // Store selected package details
+
+  const handleOpen = (pack) => {
+    setModalPackage(pack); // Set selected package
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setModalPackage(null); // Reset modal package when closing
+  };
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -353,16 +378,27 @@ export default function SponsorEventDetails() {
                       cursor: "pointer",
                       border:
                         selectedPackage?.id === pack.id
-                          ? "2px solid blue"
-                          : "1px solid gray",
-                      padding: "10px",
-                      margin: "5px",
-                      borderRadius: "5px",
+                          ? "2px solid #1A434E"
+                          : "1px solid #c4b6b6",
                       minWidth: "200px", // Ensure each card is visible
                     }}
                   >
-                    <Typography>{pack.title}</Typography>
-                    <Typography>${pack.unit_price}</Typography>
+                    <Box className="package_info">
+                      <Typography className="package_name" variant="p">
+                        {pack.title}
+                      </Typography>
+                      <Typography className="package_price" variant="body2">
+                        ${pack.unit_price}
+                      </Typography>
+                      <Button
+                        onClick={() => handleOpen(pack)} // Pass the selected package
+                        variant="contained"
+                        className="mt6"
+                        type="button"
+                      >
+                        Details
+                      </Button>
+                    </Box>
                   </motion.div>
                 ))}
               </motion.div>
@@ -407,6 +443,21 @@ export default function SponsorEventDetails() {
           severity={snackbar.severity}
           onClose={handleSnackbarClose}
         />
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Package details
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 1 }}>
+              {modalPackage?.description || "No description available."}
+            </Typography>
+          </Box>
+        </Modal>
       </Container>
     </React.Fragment>
   );

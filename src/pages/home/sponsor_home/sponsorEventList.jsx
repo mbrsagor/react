@@ -229,7 +229,7 @@ export default function SponsorEventList() {
                 <SingleHost
                   photo={host.avatar}
                   hostId={host.id}
-                  link={host.id ? `/host/${host.id}` : "#"}
+                  link={`/host/${host.id}`}
                   btn_text={host.is_followed ? "Following" : "Follow"}
                   name={host.host_name}
                   followers={host.total_follower}

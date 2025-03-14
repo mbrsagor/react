@@ -45,6 +45,7 @@ import SponsorPaymentHistory from "./pages/host/payment_history/SponsorPaymentHi
 // Host/company Payment history
 import PaymentHistoryLv from "./pages/payment_history/paymentHistoryLv";
 import TransactionHistoryFilter from "./pages/payment_history/filter/transactionHistoryFilter";
+import GenerateReport from "./pages/payment_history/report/report";
 // Event all pages
 import EventListPage from "./pages/event/event_lv/event_list_page";
 import SponsorEventList from "./pages/event/event_lv/sponsorEventList";
@@ -103,6 +104,7 @@ export default function App() {
           <Route path="/profile_update/:id" element={<ProtectedRoute> <ProfileUpdate /></ProtectedRoute>}/>
           <Route path="/payment-history" element={<ProtectedRoute> <PaymentHistoryLv /></ProtectedRoute>}/>
           <Route path="/filter-transaction" element={<ProtectedRoute> <TransactionHistoryFilter /></ProtectedRoute>}/>
+          <Route path="/generate-report" element={<ProtectedRoute> <GenerateReport /></ProtectedRoute>}/>
           <Route path="/sponsor-payment-history" element={<ProtectedRoute> <SponsorPaymentHistory /></ProtectedRoute>}/>
           <Route path="/settings" element={<ProtectedRoute> <Settings /></ProtectedRoute>}/>
           <Route path="/scan-qr/:event_id" element={<ProtectedRoute> <ScanTicket /></ProtectedRoute>}/>
@@ -110,7 +112,7 @@ export default function App() {
           <Route path="/feedback" element={<ProtectedRoute> <Feedback /></ProtectedRoute>}/>
           <Route path="/hosts" element={<ProtectedRoute> <MyHosts /></ProtectedRoute>}/>
           <Route path="/purchase-success" element={<ProtectedRoute> <PurchaseSuccess /></ProtectedRoute>}/>
-          <Route path="/host/:host" element={<ProtectedRoute> <HostDetails /></ProtectedRoute>}/>
+          <Route path="/host/:id" element={<ProtectedRoute> <HostDetails /></ProtectedRoute>}/>
           <Route path="/all-hosts" element={<ProtectedRoute> <AllHostListView /></ProtectedRoute>}/>
         </Route>
         {/* public route */}

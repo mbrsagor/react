@@ -47,6 +47,8 @@ export const MyGuards = `${user}/guards/`;
 export const GuardSignUp = `${user}/signup-guard/`;
 export const InvitationURL = `${sponsor}/generate-invitation-link/`;
 export const TransactionURL = `${sponsor}/transaction-history-list/web/`;
+export const TransactionFilterURL = `${sponsor}/transaction-history/`;
+export const DownloadReportURL = `${sponsor}/transaction-history-pdf/`;
 export const EventDetailURL = (id) => `${event}/event/${id}/`;
 export const EventDeleteURL = (id) => `${event}/event/${id}/`;
 export const CategoryDeleteURL = (id) => `${event}/category/${id}/`;

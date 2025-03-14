@@ -15,7 +15,7 @@ export default function CreateEvent() {
       <Container className="content">
         <ToolsBar link="/events" title="Create Event" />
         <Box className="parent_sec pb80">
-          <Box className="mt5">
+          <Box className="mt6">
             <EventForm />
           </Box>
         </Box>

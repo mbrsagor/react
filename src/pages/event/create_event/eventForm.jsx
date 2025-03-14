@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
@@ -25,6 +25,9 @@ const MenuProps = {
   },
 };
 
+const MAPBOX_ACCESS_TOKEN =
+  "sk.eyJ1IjoiZ2xvYmFsZHluYW1pY3NvbHV0aW9ucyIsImEiOiJjbTM3aHp6OGgwYTJwMm5yMXF6b3B0ZzJkIn0.F1aio-ONR5p9FJaun1PU_g"; 
+
 export default function EventForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -40,6 +43,10 @@ export default function EventForm() {
   const [tags, setTags] = useState([]);
   const [start_date, setStartDate] = useState(null);
   const [end_date, setSEndDate] = useState(null);
+
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const inputRef = useRef(null);
 
   // messages
   const [loading, setLoading] = useState(false);
@@ -84,6 +91,7 @@ export default function EventForm() {
     event.preventDefault();
     setLoading(true);
     try {
+      const formattedTags = tags.map(String); // Ensures all tags are strings
       // Format the date when submitting
       const formattedStartDate = start_date
         ? dayjs(start_date).format("YYYY-MM-DD hh:mm A")
@@ -93,7 +101,7 @@ export default function EventForm() {
         : null;
       const response = await axios.post(MyEvents, {
         title: title,
-        tags: [tags],
+        tags: formattedTags,
         prices: prices,
         location: location,
         capacity: capacity,
@@ -160,6 +168,42 @@ export default function EventForm() {
     );
   };
 
+  const fetchSuggestions = async (query) => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_ACCESS_TOKEN}&autocomplete=true&limit=5`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.features) {
+        setSuggestions(data.features.map((place) => place.place_name));
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setQuery(value);
+    fetchSuggestions(value);
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    setQuery(suggestion); // ✅ Updates input field
+    setLocation(suggestion); // ✅ Ensures location is set for API submission
+    setSuggestions([]); // ✅ Clears suggestions after selection
+
+    if (inputRef.current) {
+      inputRef.current.focus(); // ✅ Keeps focus on input
+    }
+  };
+
 
   return (
     <React.Fragment>
@@ -210,7 +254,15 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(tags) => setTags(tags.target.value)}
+              onChange={(event) =>
+                setTags(
+                  event.target.value
+                    .split(",") // Split input by commas
+                    .map((tag) => tag.trim()) // Remove spaces
+                    .filter((tag) => tag.length > 0) // Remove empty tags
+                    .map(String) // Ensure each item is a string
+                )
+              }
             />
             <Typography className="event_tag_label" variant="body2">
               Event Tags Separated by Comma. E.G: Food, Travel
@@ -228,8 +280,30 @@ export default function EventForm() {
                   borderRadius: "15px",
                 },
               }}
-              onChange={(location) => setLocation(location.target.value)}
+              // onChange={(location) => setLocation(location.target.value)}
+              onChange={handleInputChange}
+              inputRef={inputRef}
+              value={query}
             />
+            {suggestions.length > 0 && (
+              <ul className="location_list">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    className="single_location"
+                    key={index}
+                    onClick={() => handleSelectSuggestion(suggestion)}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f2f2f2")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#fff")
+                    }
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
             <Typography className="event_form_label" variant="p">
               Add Event Capacity
             </Typography>
