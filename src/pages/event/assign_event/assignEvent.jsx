@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Typography, Container, Button } from "@mui/material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
@@ -11,6 +12,7 @@ import { GuardAssignEvents } from "../../../services/api_service";
 export default function AssignEvent() {
   // Model
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   // Fetching my  events data
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function AssignEvent() {
       .get(GuardAssignEvents)
       .then((response) => {
         if (response) {
-        //   console.log(response.data); // Debugging purpose only, remove it before production.
+          //   console.log(response.data); // Debugging purpose only, remove it before production.
           setEvents(response.data.data);
         }
       })
@@ -27,6 +29,11 @@ export default function AssignEvent() {
         setEvents([]);
       });
   }, []);
+
+  // Sent event id scan qr code screen
+  const scanHandler = (event_id) => {
+    navigate(`/scan-qr/${event_id}`); // Pass event_id in the URL
+  };
 
   return (
     <React.Fragment>
@@ -61,7 +68,7 @@ export default function AssignEvent() {
                       </Box>
                     </Box>
                     <Box className="scan_qr">
-                      <Button>
+                      <Button onClick={() => scanHandler(event.event.id)}>
                         <DocumentScannerOutlinedIcon /> Scan QR code
                       </Button>
                     </Box>
