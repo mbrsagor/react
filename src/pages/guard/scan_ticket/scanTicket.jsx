@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import QrScanner from "react-qr-scanner";
 import { Box, Button, TextField } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -13,41 +14,39 @@ import { VerifyTicket, EventDetailURL } from "../../../services/api_service";
 import ToolsBar from "../../../components/tools_bar";
 
 export default function ScanTicket() {
-  // Model
   const [event, setEvents] = useState("");
   const [ticket_number, setTicketNumber] = useState("");
+  const [showScanner, setShowScanner] = useState(false); // State to show/hide QR scanner
   const { event_id } = useParams(); // Get event_id from URL
-  // messages
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "error",
   });
 
-  // Fetch event
   useEffect(() => {
     const fetchEventData = async () => {
       try {
         const response = await axios.get(EventDetailURL(event_id));
         if (response.status === 200) {
-          setEvents(response.data.data); // Update state with the event data
+          setEvents(response.data.data);
         }
       } catch (error) {
         setSnackbar({
           open: true,
-          message: "Error fetching event data:",
-          error,
+          message: `Error: ${error}`,
           severity: "error",
         });
       }
     };
 
     if (event_id) {
-      fetchEventData(); // Call the function to fetch event data
+      fetchEventData();
     }
   }, [event_id]);
 
-  // Handle form submit
+  // Submit handler
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -58,14 +57,55 @@ export default function ScanTicket() {
           message: response.data.message,
           severity: "success",
         });
-        setTicketNumber(""); // Clear the ticket number after submission
+        setTicketNumber("");
       }
     } catch (error) {
-      console.error("Error fetching event data:", error);
+      console.error("Error verifying ticket:", error);
     }
   };
 
-  // Snackbar
+  // QR code submit handler
+  const handleScan = async (data) => {
+    if (data?.text) {
+      // Extract the last part of the URL (ticket number)
+      const scannedText = data.text.trim();
+      const ticketParts = scannedText.split("/");
+      const ticketNumber = ticketParts[ticketParts.length - 1]; // Get last part
+
+      setTicketNumber(ticketNumber); // Store only the ticket number
+
+      try {
+        const response = await axios.get(VerifyTicket(event_id, ticketNumber));
+        if (response.status === 200) {
+          console.log("Scanned Ticket:", ticketNumber);
+          setSnackbar({
+            open: true,
+            message: response.data.message,
+            severity: "success",
+          });
+          setShowScanner(false);
+        }
+      } catch (error) {
+        console.error("Error verifying scanned ticket:", error);
+        setSnackbar({
+          open: true,
+          message: "Error verifying scanned ticket",
+          severity: "error",
+        });
+      }
+    }
+  };
+
+
+
+  const handleError = (err) => {
+    console.error("QR Scanner Error:", err);
+  };
+
+  const toggleScanner = () => {
+    setShowScanner(!showScanner);
+  };
+
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
   };
@@ -86,7 +126,19 @@ export default function ScanTicket() {
               </Typography>
             </Box>
             <Box className="mt5">
-              <QrCodeScannerOutlinedIcon />
+              {/* Click Icon to Toggle Scanner */}
+              <QrCodeScannerOutlinedIcon
+                onClick={toggleScanner}
+                style={{ cursor: "pointer", fontSize: "40px" }}
+              />
+              {showScanner && (
+                <QrScanner
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                  style={{ width: "100%", marginTop: "10px" }}
+                />
+              )}
             </Box>
             <Box>
               <Typography className="scan_qr_code" variant="body1">
@@ -107,7 +159,7 @@ export default function ScanTicket() {
                       borderRadius: "15px",
                     },
                   }}
-                  value={ticket_number} // Bind value to the state
+                  value={ticket_number}
                   onChange={(event) => setTicketNumber(event.target.value)}
                 />
                 <Button variant="contained" className="app_btn" type="submit">
