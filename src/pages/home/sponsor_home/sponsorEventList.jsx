@@ -81,13 +81,14 @@ export default function SponsorEventList() {
         <TextField
           className="sponsor_search_bar"
           variant="outlined"
-          placeholder="Search latest events..."
+          placeholder="Tap to Search"
           rows={1.5}
           multiline
           size="small"
           fullWidth
           type="search"
           value={searchQuery}
+          onClick={() => navigate("/sponsor-events-search")}
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={{
             "& .MuiInputBase-input": {

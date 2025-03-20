@@ -6,6 +6,7 @@ import ProtectedRoute from "./services/ProtectedRoute";
 // Main home page
 import Homepage from "./pages/home/host_home/home";
 import SponsorHome from "./pages/home/sponsor_home/sponsorHome";
+import SponsorEventSearch from "./pages/home/sponsor_home/sponsorEventSearch";
 // Auth
 import SignIn from "./pages/signin/signin";
 import SignUp from "./pages/signup/signup";
@@ -80,6 +81,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/home" element={<ProtectedRoute> <Homepage /></ProtectedRoute>}/>
           <Route path="/sponsor-home" element={<ProtectedRoute> <SponsorHome /></ProtectedRoute>}/>
+          <Route path="/sponsor-events-search" element={<ProtectedRoute> <SponsorEventSearch /></ProtectedRoute>}/>
           <Route path="/guard-home" element={<ProtectedRoute> <GuardHome /></ProtectedRoute>}/>
           <Route path="/sponsor-purchase-events" element={<ProtectedRoute> <SponsorEventList /></ProtectedRoute>}/>
           <Route path="/purchase-event-detail/:id" element={<ProtectedRoute> <PurchaseEventDetail /></ProtectedRoute>}/>

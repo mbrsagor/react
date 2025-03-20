@@ -206,6 +206,7 @@ export default function Report() {
                 <MenuItem value="week">Weekly</MenuItem>
                 <MenuItem value="month">Monthly</MenuItem>
                 <MenuItem value="year">Yearly</MenuItem>
+                <MenuItem value="date_range">Set Date Range</MenuItem>
               </Select>
             </FormControl>
 
@@ -274,11 +275,50 @@ export default function Report() {
               />
             )}
 
+            {/* Display Set Date Range filter */}
+            {selectedOption === "date_range" && (
+              <Box>
+                <TextField
+                  fullWidth
+                  name="start_date"
+                  type="date"
+                  value={filters.start_date}
+                  onChange={handleFilterChange}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "15px",
+                      marginBottom: "10px",
+                    },
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  name="end_date"
+                  type="date"
+                  value={filters.end_date}
+                  onChange={handleFilterChange}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "15px",
+                      marginBottom: "10px",
+                    },
+                  }}
+                />
+              </Box>
+            )}
+
             {/* Download Button */}
             <Button
               variant="contained"
               onClick={handleSubmit}
               className="modal_submit_btn mt6 download_report_btn"
+              disabled={
+                selectedOption === "" ||
+                (selectedOption === "month" && filters.month === "") ||
+                (selectedOption === "year" && filters.year === "") ||
+                (selectedOption === "date_range" &&
+                  (filters.start_date === "" || filters.end_date === ""))
+              } // Disable until both month & year are selected if needed
             >
               Download
             </Button>

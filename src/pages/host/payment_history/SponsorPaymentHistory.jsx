@@ -15,8 +15,6 @@ export default function HostPaymentHistory() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const [transactionsHistory, setTransactionHistory] = useState([]);
 
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
 
   // Fetch translations data
     useEffect(() => {
@@ -33,9 +31,6 @@ export default function HostPaymentHistory() {
       <CssBaseline />
       <Container className="content">
         <ToolsBar
-          open={modalOpen}
-          onClose={handleClose}
-          handleOpen={handleOpen}
           link="/profile"
           title="Payment History"
         />

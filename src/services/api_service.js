@@ -71,6 +71,9 @@ export const HostDetailsURL = (id) => `${user}/host-profile/${id}/`;
 export const purchaseEventDetailURL = (id) => `${sponsor}/purchase-event/${id}/`;
 export const PurchaseEventListURL = `${sponsor}/purchase-event/`;
 export const HostListURL = `${sponsor}/hosts/`;
+export const EventSearchFilterURL = `${event}/search-events/`;
+export const EventFilterUtilsURL = `${event}/search-event-utils/`;
+
 export const SponsorGetTicketURL = (event, pkg) => `${sponsor}/tickets/?event=${event}&package=${pkg}`;
 
 // Guard endpoints

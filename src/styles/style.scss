@@ -1619,6 +1619,90 @@ Event Guard
     border-radius: 10px;
 }
 
+.sponsor_custom_search_sec {
+    padding: 0 5px;
+    .one_third {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;    /* Allow horizontal scrolling */
+    overflow-y: hidden;  /* Hide vertical scrollbar */
+    margin-top: 10px;
+    gap: 10px;
+  
+    .modal_item {
+        flex: 0 0 auto;      /* Prevent shrinking or growing */
+        display: inline-flex; /* Align the items horizontally */
+        border: 1px solid $black_color;
+        padding: 7px;
+        border-radius: 15px;
+
+        svg {
+            margin-left: 5px;
+        }
+    }
+  }
+}
+.venue_search_modal {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    box-shadow: 24;
+    padding: 15px;
+    background: $default_text_color;
+    border-radius: 15px;
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: $primary_color;
+    }
+}
+.custom_list_item {
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .item {
+        margin-right: 10px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid $black_color;
+        border-radius: 15px;
+        margin-bottom: 10px;
+    }
+}
+.scroll_modal {
+    height: 700px;
+    overflow: scroll;
+    width: 400px;
+    top: 50%;
+    .filter_header_sec {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid $input_border_color;
+    }
+}
+
+.date_range_modal {
+    top: 25%;
+    .filter_header_sec {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid $input_border_color;
+    }
+    .date_range_sec {
+        .common_field_text {
+            width: 100%;
+        }
+    }
+}
+
 
 /*======================
     password change modal
