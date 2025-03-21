@@ -77,7 +77,7 @@ export default function ScanTicket() {
       try {
         const response = await axios.get(VerifyTicket(event_id, ticketNumber));
         if (response.status === 200) {
-          console.log("Scanned Ticket:", ticketNumber);
+          // console.log("Scanned Ticket:", ticketNumber);
           setSnackbar({
             open: true,
             message: response.data.message,
@@ -136,6 +136,9 @@ export default function ScanTicket() {
                   delay={300}
                   onError={handleError}
                   onScan={handleScan}
+                  constraints={{
+                    video: { facingMode: { exact: "environment" } }, // Forces back camera
+                  }}
                   style={{ width: "100%", marginTop: "10px" }}
                 />
               )}
