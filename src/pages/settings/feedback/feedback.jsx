@@ -10,7 +10,7 @@ import axios from "../../../services/axiosConfig";
 import CustomSnackbar from "../../../components/snackbar";
 import CustomLoader from "../../../components/customLoader";
 import { FeedBackURL } from "../../../services/api_service";
-import FileUploadIcon from "../../../assets/uploader.png";
+import FileUploadIcon from "../../../assets/DefaultThumbnail.jpg";
 
 export default function Feedback() {
   // modal

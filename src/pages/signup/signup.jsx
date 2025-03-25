@@ -10,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 
 import axios from "axios";
 import { signupURL } from "./../../services/api_service";
@@ -103,17 +104,20 @@ export default function SignUp() {
       <CssBaseline />
       <Container className="outer_content">
         <Box>
-          <Typography className="header_headline" fontWeight={700} variant="p">
-            Host
+          <Typography className="header_headline" fontWeight={700} variant="h6">
+          <ArrowBackIosOutlinedIcon
+              className="auth_back"
+              onClick={() => navigate("/user-type")}
+            />  Host
           </Typography>
         </Box>
         <Box className="mb10">
-          <Typography className="phn_num_otp_text" variant="p">
+          <Typography className="phn_num_otp_text ml10" variant="p">
             Sign up here as a host
           </Typography>
         </Box>
         <Box>
-          <Typography variant="body2">Basic Information</Typography>
+          <Typography variant="body2 ml10">Basic Information</Typography>
           <form
             onSubmit={handleSubmit}
             style={{

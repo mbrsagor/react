@@ -44,7 +44,7 @@ export default function HostPaymentHistory() {
                   date={transaction.created_at}
                   amount={transaction.amount}
                   cardType={transaction.payment_method_types}
-                  country={transaction.payment_from_country}
+                  // country={transaction.payment_from_country}
                   key={transaction.id}
                 />
               ))

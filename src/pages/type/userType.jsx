@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { Box, Avatar, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomSnackbar from "../../components/snackbar";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 // Reusable UserCard Component
 // eslint-disable-next-line react/prop-types
 const UserCard = ({ label, onClick, isSelected }) => {
@@ -79,7 +80,11 @@ export default function UserType() {
       <CssBaseline />
       <Container className="outer_content">
         <Box>
-          <Typography className="header_headline" fontWeight={700} variant="p">
+          <Typography className="header_headline" fontWeight={700} variant="h6">
+            <ArrowBackIosOutlinedIcon
+              className="auth_back"
+              onClick={() => navigate("/verify-otp")}
+            />
             Select User Type
           </Typography>
         </Box>

@@ -49,7 +49,7 @@ export default function Homepage() {
             <CardCounter counter={`$${income}`} sub_title="Total Earning" />
             <CardCounter counter={member} sub_title="Total Members" />
             <CardCounter counter={sponsor} sub_title="Total Sponsors" />
-            <CardCounter counter={guard} sub_title="Total Guard" />
+            <CardCounter counter={guard} sub_title="Total Guards" />
           </Box>
         </Box>
       </Container>

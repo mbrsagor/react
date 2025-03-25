@@ -108,7 +108,7 @@ export default function Categories() {
       <CssBaseline />
       <Container className="content">
         <ToolsBar
-          link="/categories"
+          link="/events"
           title="Event Category"
           handleOpen={handleOpen}
           CustomIcon={AddCircleOutlineTwoToneIcon}
@@ -118,7 +118,11 @@ export default function Categories() {
             categories.map((category) => (
               <Box key={category.id} className="category_lv_sec">
                 <Box className="cat_icon_with_txt">
-                  <WidgetsIcon />
+                  {category.icon_url ? (
+                    <img src={category.icon_url} alt="" width={25} height={15} />
+                  ) : (
+                    <WidgetsIcon />
+                  )}
                   <Typography className="menu_item_text" variant="p">
                     {category.name}
                   </Typography>

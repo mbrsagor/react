@@ -47,7 +47,6 @@ export default function SponsorEventList() {
         <Box className="parent_sec pb80">
           {events && events.length > 0 ? (
             events.map((event) => (
-              // <Link key={event.id} to={`/purchase-event-detail/${event.id}`}>
               <Events
                 key={event.id}
                 detail_link={`/purchase-event-detail/${event.id}`}
@@ -58,7 +57,6 @@ export default function SponsorEventList() {
                 venue={event.event.location}
                 tags={event.event.tags}
               />
-              // </Link>
             ))
           ) : (
             <Typography className="no_data_text" variant="body">
@@ -71,7 +69,6 @@ export default function SponsorEventList() {
           />
         </Box>
       </Container>
-      <Box className="parent_sec pb80"></Box>
     </React.Fragment>
   );
 }

@@ -74,6 +74,10 @@ $input_dropdown_border: #CACACA;
     padding-bottom: 15px !important;
 }
 
+.ml10 {
+    margin-left: 10px !important;
+}
+
 a {
     color: $primary_color;
     text-decoration: none;
@@ -378,6 +382,12 @@ a {
    Password customization
 =======================*/
 
+.auth_back {
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+}
+
 .custom_password_field {
     border-radius: 15px !important;
 }
@@ -530,6 +540,29 @@ a {
         font-weight: 600;
     }
 }
+
+// Host slider
+.slider_parent_sec {
+    height: 180px;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+.host_slider {
+    width: 100%;
+    height: auto;
+}
+
+.host_slider_overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: $default_text_color;
+    border-radius: 10px;
+}
+
 // Main bottom section
 .main_bottom_bar_sec {
         .MuiPaper-elevation {
@@ -918,7 +951,11 @@ Event Guard
 }
 
 .guard_generic {
-    top: 30%;
+    top: 33%;
+    .guard_btn_group {
+        display: flex;
+        gap: 10px;
+    }
 }
 
 .guard_update_label {
@@ -947,6 +984,21 @@ Event Guard
             padding: 10px 15px;
         }
     }
+}
+
+// Guard switch
+.guard_update_status_switch .MuiSwitch-switchBase.Mui-checked{
+    color: $primary_color;
+}
+.guard_update_status_switch .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track{
+    color: $primary_color;
+}
+.guard_update_status_switch .MuiSwitch-switchBase {
+  color: $primary_color !important;
+}
+
+.guard_update_status_switch .MuiSwitch-track {
+  color: $primary_color !important;
 }
 
 .running_events {
@@ -1023,6 +1075,7 @@ Event Guard
                 .start_time {
                     width: 100%;
                     display: inline-block;
+                    color: $black_color !important;
                 }
             }
             .tag_sec {
@@ -1285,6 +1338,12 @@ Event Guard
             margin-bottom: 15px;
         }
     }
+    // .scanner_camera {
+    //     width: 100;
+    //     position: absolute;
+    //     left: 0;
+    //     top: 0;
+    // }
 }
 /*======================
     Payment setting
@@ -1717,6 +1776,7 @@ Event Guard
         }
         .custom_tab_item {
             font-weight: 700 !important;
+            text-transform: capitalize;
         }
         .Mui-selected {
             color: $primary_color !important;
@@ -2054,7 +2114,10 @@ Event Guard
         font-weight: 600;
         color: $primary_color;
         font-size: 20px;
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
+    }
+    .count_follow {
+        font-size: 16px;
     }
     .host_avatar {
         width: 100px;

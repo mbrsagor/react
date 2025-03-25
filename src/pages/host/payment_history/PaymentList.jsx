@@ -3,9 +3,9 @@ import React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+// import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+// import IconButton from "@mui/material/IconButton";
+// import Tooltip from "@mui/material/Tooltip";
 
 import CustomSnackbar from "../../../components/snackbar";
 
@@ -21,18 +21,18 @@ export default function PaymentList(props) {
     };
   
     // copy transaction ID
-    const handleCopy = () => {
-      navigator.clipboard
-        .writeText(props.transactionID)
-        .then(() => {
-          setSnackbar({
-            open: true,
-            message: "Transaction ID copied!",
-            severity: "success",
-          });
-        })
-        .catch((err) => console.error("Failed to copy:", err));
-    };
+    // const handleCopy = () => {
+    //   navigator.clipboard
+    //     .writeText(props.transactionID)
+    //     .then(() => {
+    //       setSnackbar({
+    //         open: true,
+    //         message: "Transaction ID copied!",
+    //         severity: "success",
+    //       });
+    //     })
+    //     .catch((err) => console.error("Failed to copy:", err));
+    // };
   return (
     <React.Fragment>
       <CssBaseline />
@@ -44,9 +44,9 @@ export default function PaymentList(props) {
         </Box>
         <Box>
           <Typography className="tranID" variant="p">
-            TranxID#:
+            TranxID#: {props.transactionID}
           </Typography>
-          <Box className="tranID_copy">
+          {/* <Box className="tranID_copy">
             <Typography className="tran_text" variant="body1">
               {props.transactionID}
             </Typography>
@@ -55,7 +55,7 @@ export default function PaymentList(props) {
                 <ContentCopyIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-          </Box>
+          </Box> */}
           <Box>
             <Typography className="card_type" variant="body1">
               Card Type: {props.cardType}
@@ -63,7 +63,7 @@ export default function PaymentList(props) {
           </Box>
           <Box>
             <Typography className="country" variant="body1">
-              Country: {props.country}
+              Purchase event package
             </Typography>
           </Box>
           <Box>

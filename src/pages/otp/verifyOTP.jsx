@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import { TextField, Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useLocation, useNavigate } from "react-router-dom";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 
 import axios from "axios";
 import { verifyOTP } from "./../../services/api_service";
@@ -82,12 +83,16 @@ export default function VerifyOTP() {
       <CssBaseline />
       <Container className="outer_content">
         <Box>
-          <Typography className="header_headline" fontWeight={700} variant="p">
+          <Typography className="header_headline" fontWeight={700} variant="h6">
+            <ArrowBackIosOutlinedIcon
+              className="auth_back"
+              onClick={() => navigate("/sent-otp")}
+            />
             OTP Verification
           </Typography>
         </Box>
         <Box>
-          <Typography className="phn_num_otp_text" variant="p">
+          <Typography className="phn_num_otp_text ml10" variant="p">
             Enter OTP code that sent to {phone}
           </Typography>
         </Box>

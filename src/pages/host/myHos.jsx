@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import { Typography, Button } from "@mui/material";
@@ -13,6 +13,7 @@ import { FollowersURL, UnFollowersURL } from "../../services/api_service";
 
 export default function MyHosts() {
   const [hosts, setHosts] = useState([]);
+  const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -43,11 +44,15 @@ export default function MyHosts() {
     axios
       .delete(UnFollowersURL(host_id)) // Ensure this is a function
       .then((response) => {
-        setSnackbar({
-          open: true,
-          message: response.data.message,
-          severity: "success",
-        });
+        if (response.status === 200) {
+          // Navigate to the same route again
+          navigate("/hosts");
+          setSnackbar({
+            open: true,
+            message: response.data.message,
+            severity: "success",
+          });
+        }
 
         // Remove unfollowed host from list
         setHosts((prevHosts) =>
@@ -97,7 +102,9 @@ export default function MyHosts() {
               </Box>
             ))
           ) : (
-            <Typography variant="body1">No Data Available</Typography>
+            <Typography className="no_data_text" variant="body1">
+              No Data Available
+            </Typography>
           )}
         </Box>
       </Container>

@@ -110,6 +110,7 @@ export default function EventListPage() {
                 tags={event.tags}
                 update_event={() => navigate(`/event-update/${event.id}`)}
                 delete_event={() => handleDialogOpen(event.id)} // Open dialog to confirm deletion
+                scan_qr_code={() => navigate(`/scan-qr/${event.id}`)}
                 detail_link={`/event/${event.id}`}
               />
             ))

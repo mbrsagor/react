@@ -115,7 +115,7 @@ export default function ScanTicket() {
       <CssBaseline />
       <Container className="content">
         <Box className="parent_sec">
-          <ToolsBar link="/guard-home" title="QR Code Scan" />
+          <ToolsBar link="/assign-events" title="QR Code Scan" />
           <Box className="scan_qr_code_sec">
             <Typography className="event_title" variant="h6">
               Event: {event.title}
@@ -133,6 +133,7 @@ export default function ScanTicket() {
               />
               {showScanner && (
                 <QrScanner
+                  // className="scanner_camera"
                   delay={300}
                   onError={handleError}
                   onScan={handleScan}

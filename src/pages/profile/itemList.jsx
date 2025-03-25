@@ -132,20 +132,20 @@ export default function ItemList() {
 
   return (
     <Container className="profile_item_lv">
+      {(userData.role === 3 || userData.role === 4) && (
+        <Link to="#" onClick={() => handleRoleChange(true)}>
+          <Box className="item">
+            <SwitchAccountIcon />
+            <Typography variant="p">Profile Switch {userData.role === 3 ? "Sponsor" : "Host"} </Typography>
+          </Box>
+        </Link>
+      )}
       <Link to={`/profile_update/${userData.user_id}`}>
         <Box className="item">
           <EditLocationAltOutlinedIcon />
           <Typography variant="p">Edit Profile </Typography>
         </Box>
       </Link>
-      {(userData.role === 3 || userData.role === 4) && (
-      <Link to="#" onClick={() => handleRoleChange(true)}>
-        <Box className="item">
-          <SwitchAccountIcon />
-          <Typography variant="p">Profile Switch</Typography>
-        </Box>
-      </Link>
-        )}
       <Link to="#" onClick={() => setModalOpen(true)}>
         <Box className="item">
           <KeyOutlinedIcon />

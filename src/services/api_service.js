@@ -8,8 +8,8 @@ const API_URLS = {
 
 export const BASE_URL = API_URLS[ENV] || API_URLS.development;
 
-console.log("Current Environment:", ENV);
-console.log("API URL:", BASE_URL);
+// console.log("Current Environment:", ENV);
+// console.log("API URL:", BASE_URL);
 
 export const apiURL = "/api/v1";
 

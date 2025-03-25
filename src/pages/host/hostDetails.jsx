@@ -57,6 +57,9 @@ export default function HostDetails() {
             <Typography className="name" variant="h6">
               {host.fullname}
             </Typography>
+            <Typography className="count_follow" variant="p">
+              Followers: 1
+            </Typography>
           </Box>
           <Box className="host_bottom_sec">
             <HostDetailTab

@@ -3,9 +3,8 @@ import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 
 import { MyEvents, AssignedEvents } from "../../../services/api_service";
 import axios from "../../../services/axiosConfig";
@@ -81,20 +80,18 @@ export default function AddAssignEvent() {
       <Container className="content">
         <Box className="assigned">
           <Box className="add_assign_event">
-            <Typography className="title" variant="h6">
-              Select Event
-            </Typography>
             <form onSubmit={handleSubmit}>
               <FormControl fullWidth>
-                <InputLabel id="event-select-label">Tab Here</InputLabel>
                 <Select
-                  labelId="event-select-label"
                   id="event-select"
                   className="custom-select common_field_text"
-                  value={event} // Correct binding
-                  placeholder="Tab Here"
-                  onChange={(e) => setEvent(e.target.value)} // Updating event state
+                  value={event}
+                  onChange={(e) => setEvent(e.target.value)}
+                  displayEmpty // 🔥 Important: Allows placeholder-like behavior
                 >
+                  <MenuItem value="" disabled>
+                    Tab Here to select
+                  </MenuItem>
                   {events.length > 0 ? (
                     events.map((ev) => (
                       <MenuItem key={ev.id} value={ev.id}>

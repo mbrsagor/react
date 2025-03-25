@@ -137,6 +137,7 @@ export default function GuardUpdate() {
                 Guard Status
               </Typography>
               <Switch
+                className="guard_update_status_switch"
                 checked={userData.is_active} // Bind to checked, not value
                 onChange={handleSwitchChange}
                 value={userData.is_active}

@@ -31,8 +31,8 @@ const API_URLS = {
 
 const publicKey = API_URLS[ENV] || API_URLS.development;
 
-console.log("Current Environment:", ENV);
-console.log("API Key:", publicKey);
+// console.log("Current Environment:", ENV);
+// console.log("API Key:", publicKey);
 
 // Load Stripe public key
 const stripePromise = loadStripe(publicKey);

@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Checkbox from "@mui/joy/Checkbox";
 import Link from "@mui/joy/Link";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+
 import PhoneNumber from "../../components/phoneNumber";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CustomSnackbar from "../../components/snackbar";
@@ -72,7 +74,11 @@ const SendOTP = () => {
       <CssBaseline />
       <Container className="outer_content">
         <Box>
-          <Typography className="header_headline" fontWeight={700} variant="p">
+          <Typography className="header_headline" fontWeight={700} variant="h6">
+            <ArrowBackIosOutlinedIcon
+              className="auth_back"
+              onClick={() => navigate("/signin")}
+            />
             Hi! Welcome to E-pass
           </Typography>
         </Box>
@@ -83,7 +89,7 @@ const SendOTP = () => {
         </Box>
         <Box fontStyle={{ marginTop: "10px" }}>
           <Box className="mb10">
-            <Typography fontSize={13} variant="p">
+            <Typography fontSize={16} variant="p">
               Enter your phone number
             </Typography>
           </Box>

@@ -53,22 +53,14 @@ export default function CarouselSlider() {
       <Slider {...settings}>
         {slides.length > 0 ? (
           slides.map((slide, index) => (
-            <Box key={index} sx={{ position: "relative", height: "190px" }}>
+            <Box key={index} className="slider_parent_sec">
               <img
                 src={slide.image}
                 alt={slide.title}
-                style={{ width: "100%", height: "auto" }}
+                className="host_slider"
               />
               <Box
-                sx={{
-                  position: "absolute",
-                  bottom: "20px",
-                  left: "20px",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  color: "white",
-                  padding: "10px",
-                  borderRadius: "8px",
-                }}
+                className="host_slider_overlay"
               >
                 <Typography variant="h6">{slide.title}</Typography>
                 <Typography variant="body2">{slide.text}</Typography>

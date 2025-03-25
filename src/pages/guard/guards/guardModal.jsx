@@ -10,7 +10,7 @@ import axios from "../../../services/axiosConfig";
 import CustomSnackbar from "../../../components/snackbar";
 import CustomLoader from "../../../components/customLoader";
 import { GuardSignUp } from "../../../services/api_service";
-import PasswordField from "../../../components/password"
+import GeneratePasswordField from "../../../components/generatePassword";
 import PhoneNumber from "../../../components/phoneNumber";
 
 export default function GuardModal({
@@ -42,6 +42,20 @@ export default function GuardModal({
     setSnackbar({ ...snackbar, open: false });
   };
 
+  // Generate password for the guard user
+  const generatePassword = () => {
+    const length = 12;
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+    let newPassword = "";
+    for (let i = 0; i < length; i++) {
+      newPassword += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    setPassword(newPassword);
+    console.log("Generated Password:", newPassword); // Debugging
+  };
+
+  // Create new guard object
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -156,17 +170,28 @@ export default function GuardModal({
                   <Typography className="event_form_label" variant="p">
                     PassWord
                   </Typography>
-                  <PasswordField
-                    onChange={(event) => setPassword(event.target.value)}
+                  <GeneratePasswordField
+                    value={password} // ✅ Ensures controlled input
+                    onChange={(event) => setPassword(event.target.value)} // ✅ Updates state
                   />
                 </Box>
-                <Button
-                  variant="contained"
-                  className="modal_submit_btn"
-                  type="submit"
-                >
-                  {selectedGuard ? "Update" : "Submit"}
-                </Button>
+                <Box className="guard_btn_group">
+                  <Button
+                    variant="contained"
+                    className="modal_submit_btn"
+                    type="button"
+                    onClick={generatePassword} // Call the function on button click
+                  >
+                    Generate Password
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className="modal_submit_btn"
+                    type="submit"
+                  >
+                    {selectedGuard ? "Update" : "Submit"}
+                  </Button>
+                </Box>
                 {loading && <CustomLoader />}
               </form>
             </Box>

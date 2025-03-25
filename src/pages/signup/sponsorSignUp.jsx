@@ -10,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 
 import axios from "axios";
 import { signupURL } from "./../../services/api_service";
@@ -98,11 +99,14 @@ export default function SponsorSignUp() {
       <CssBaseline />
       <Container className="outer_content">
         <Box className="mt20">
-          <Typography className="header_headline" fontWeight={700} variant="p">
+          <Typography className="header_headline" fontWeight={700} variant="h6">
+            <ArrowBackIosOutlinedIcon
+              className="auth_back"
+              onClick={() => navigate("/user-type")}
+            />
             Sponsor
           </Typography>
-          <br />
-          <Typography className="phn_num_otp_text" variant="p">
+          <Typography className="phn_num_otp_text ml10" variant="p">
             Sign Up Here
           </Typography>
         </Box>

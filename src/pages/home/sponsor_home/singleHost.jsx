@@ -44,7 +44,7 @@ export default function SingleHost({ photo, name, followers, btn_text, hostId, l
       <Box className="single_host_section">
         <Box>
           <Link to={link}>
-            <Avatar alt={name} src={photo} sx={{ width: 90, height: 90 }} />
+            <Avatar alt={name} src={photo} sx={{ width: 60, height: 60 }} />
           </Link>
         </Box>
         <Box>

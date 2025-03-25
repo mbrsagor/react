@@ -425,7 +425,7 @@ export default function EventForm() {
           </Box>
           <Box>
             <Button variant="contained" className="app_btn" type="submit">
-              Create Event
+              Submit
             </Button>
           </Box>
           <CustomSnackbar

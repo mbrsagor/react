@@ -9,6 +9,7 @@ import Avatar from "@mui/material/Avatar";
 
 import axios from "../../../services/axiosConfig";
 import ToolsBar from "../../../components/tools_bar";
+import CustomSnackbar from "../../../components/snackbar";
 import { purchaseEventDetailURL } from "../../../services/api_service";
 import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 
@@ -17,6 +18,17 @@ export default function PurchaseEventDetail() {
   const [packages, setPackage] = useState([]);
   const { id } = useParams(); // Extract id from route parameters
   const navigate = useNavigate();
+  const [link, setLink] = useState("");
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   // Sent package ID and Event ID
   const data = {
@@ -29,20 +41,50 @@ export default function PurchaseEventDetail() {
     navigate("/event-ticket", { state: { data } }); // Send data
   };
 
+  // copy ticket link link
+  const handleCopy = () => {
+    if (!link) {
+      setSnackbar({
+        open: true,
+        message: "No ticket link available.",
+        severity: "error",
+      });
+      return;
+    }
+
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        setSnackbar({
+          open: true,
+          message: "Ticket link copied!",
+          severity: "success",
+        });
+      })
+      .catch((err) => console.error("Failed to copy:", err));
+  };
+
   useEffect(() => {
     axios
-      .get(purchaseEventDetailURL(id)) // Pass id to EventDetailURL
+      .get(purchaseEventDetailURL(id)) // Fetch data
       .then((response) => {
-        if (response) {
-          setEvent(response.data.data.event);
-          setPackage(response.data.data.package);
+        if (response?.data?.data?.ticket_link) {
+          // Ensure correct path
+          setLink(response.data.data.ticket_link); // Set ticket link
+        } else {
+          setLink(""); // Set empty string if not found
         }
+        setEvent(response.data.data.event || {});
+        setPackage(response.data.data.package || {});
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
-        setEvent([]);
+        setEvent({});
+        setPackage({});
+        setLink("");
       });
   }, [id]);
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -140,7 +182,8 @@ export default function PurchaseEventDetail() {
               <Button
                 variant="contained"
                 className="modal_submit_btn"
-                type="submit"
+                type="button"
+                onClick={handleCopy}
               >
                 Get Ticket Link
               </Button>
@@ -148,6 +191,12 @@ export default function PurchaseEventDetail() {
           </Box>
         </Box>
       </Container>
+      <CustomSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={handleSnackbarClose}
+      />
     </React.Fragment>
   );
 }

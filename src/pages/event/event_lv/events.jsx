@@ -4,7 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 
 export default function Events(props) {
@@ -69,11 +69,11 @@ export default function Events(props) {
                 </Button>
               </Box>
             )}
-            {props.detail_link && (
-              <Box className="event_detail_btn">
-                <Link to={props.detail_link}>
-                  <VisibilityIcon />
-                </Link>
+            {props.scan_qr_code && (
+              <Box>
+                <Button onClick={props.scan_qr_code}>
+                  <QrCodeScannerIcon />
+                </Button>
               </Box>
             )}
           </Box>
