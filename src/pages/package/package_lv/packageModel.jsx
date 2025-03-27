@@ -193,7 +193,7 @@ export default function PackageModal({
                   className="modal_submit_btn"
                   type="submit"
                 >
-                  {selectedPackage ? "Update" : "Submit"}
+                  {selectedPackage ? "Submit" : "Submit"}
                 </Button>
                 {loading && <CustomLoader />}
               </form>

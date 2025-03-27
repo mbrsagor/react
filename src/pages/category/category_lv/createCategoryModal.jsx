@@ -170,7 +170,7 @@ export default function CreateCategoryModal({open, handleClose, onCategoryAdded,
                   className="modal_submit_btn"
                   type="submit"
                 >
-                  {selectedCategory ? "Update" : "Submit"}
+                  {selectedCategory ? "Submit" : "Submit"}
                 </Button>
                 {loading && <CustomLoader />}
               </form>

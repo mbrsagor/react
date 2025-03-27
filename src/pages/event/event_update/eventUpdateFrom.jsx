@@ -468,7 +468,7 @@ export default function EventUpdateForm() {
           </Box>
           <Box>
             <Button variant="contained" className="app_btn" type="submit">
-              Update Event
+              Submit
             </Button>
           </Box>
         </form>

@@ -77,7 +77,7 @@ export default function EventTicket() {
               >
                 <Box className="ticket">
                   <Box className="qr_code">
-                    <QRCode value={ticket.link} />
+                    <QRCode id="qr-code-modal" value={ticket.link} />
                   </Box>
                   <Box className="ticket_info">
                     <Typography className="ticket_number" variant="body1">

@@ -11,6 +11,7 @@ import RunningEvent from "./runningEvent";
 
 import axios from "../../../services/axiosConfig";
 import { GuardHomeURL } from "../../../services/api_service";
+import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 
 export default function GuardHome() {
   // Model
@@ -63,7 +64,7 @@ export default function GuardHome() {
                 <RunningEvent
                   key={index}
                   scanHandler={() => scanHandler(event.event.id)}
-                  thumbnail={event.event.thumbnail}
+                  thumbnail={event.event.thumbnail || DefaultThumbnail}
                   title={event.event.title}
                   date={event.event.start_date}
                 />

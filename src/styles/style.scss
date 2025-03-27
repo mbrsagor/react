@@ -486,7 +486,7 @@ a {
 .signInContent {
     text-align: center;
     .forgot_pass {
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 600;
         color: $primary_color !important;
         max-width: 150px;
@@ -501,7 +501,7 @@ a {
 .have_an_account {
     color: #8c8787;
     font-weight: 400;
-    font-size: 12px !important;
+    font-size: 15px;
 }
 
 .parent_sec {
@@ -1452,6 +1452,24 @@ Event Guard
     .MuiTabPanel {
         padding: 0 !important;
     }
+}
+// Feedback
+.feedback_submit_icon {
+    border-radius: 20px;
+    margin-left: -15px;
+    margin-bottom: 10px;
+}
+.feedback_form_label {
+    font-weight: 500;
+    color: $black_color;
+    margin-bottom: 10px;
+}
+.save_qr_code {
+    position: relative;
+    top: 5px;
+}
+.qr_code_scan_modal {
+    top: 37% !important;
 }
 /*======================
     profile component

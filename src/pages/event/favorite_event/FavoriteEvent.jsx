@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Box, Typography, Container, Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -79,19 +80,22 @@ export default function FavoriteEvent() {
             events.map((event) => (
               <Box key={event.id} className="single_favorite_box">
                 <Box className="favorite_image">
-                  <img
-                    src={event.event?.thumbnail || DefaultThumbnail}
-                    alt={event.event?.title || "Event"}
-                  />
+                  <Link to={`/purchase-event-detail/${event.id}`}>
+                    <img
+                      src={event.event?.thumbnail || DefaultThumbnail}
+                      alt={event.event?.title || "Event"}
+                    />
+                  </Link>
                 </Box>
                 <Box className="favorite_text">
-                  <Typography variant="body2">
-                    {event.event?.start_date}
-                  </Typography>
-                  <Typography className="title" variant="h6">
-                    {event.event?.title}
-                  </Typography>
-
+                  <Link to={`/purchase-event-detail/${event.id}`}>
+                    <Typography variant="body2">
+                      {event.event?.start_date}
+                    </Typography>
+                    <Typography className="title" variant="h6">
+                      {event.event?.title}
+                    </Typography>
+                  </Link>
                   <Box className="favorite_btn">
                     <Typography variant="body2">
                       {event.event?.company_name}

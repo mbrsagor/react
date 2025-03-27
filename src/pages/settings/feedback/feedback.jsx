@@ -88,7 +88,7 @@ export default function Feedback() {
               encType="multipart/form-data"
             >
               <Box>
-                <Typography className="event_form_label" variant="p">
+                <Typography className="feedback_form_label" variant="p">
                   Your Name
                 </Typography>
                 <TextField
@@ -106,7 +106,7 @@ export default function Feedback() {
                 />
               </Box>
               <Box>
-                <Typography className="event_form_label" variant="p">
+                <Typography className="feedback_form_label" variant="p">
                   Your Phone Number
                 </Typography>
                 <TextField
@@ -124,7 +124,7 @@ export default function Feedback() {
                 />
               </Box>
               <Box>
-                <Typography className="event_form_label" variant="p">
+                <Typography className="feedback_form_label" variant="p">
                   Your Email
                 </Typography>
                 <TextField
@@ -143,7 +143,7 @@ export default function Feedback() {
                 />
               </Box>
               <Box>
-                <Typography className="event_form_label" variant="p">
+                <Typography className="feedback_form_label" variant="p">
                   Your Feedback/Message/Complain/Issue
                 </Typography>
                 <TextField
@@ -182,7 +182,12 @@ export default function Feedback() {
                     variant="contained"
                     component="span"
                   >
-                    <img src={FileUploadIcon} alt="file_upload" height={100} />
+                    <img
+                      className="feedback_submit_icon"
+                      src={FileUploadIcon}
+                      alt="file_upload"
+                      width={150}
+                    />
                     {attachment && <Typography>{attachment.name}</Typography>}
                   </Button>
                 </label>

@@ -192,7 +192,7 @@ export default function PriceModel({
                   className="modal_submit_btn"
                   type="submit"
                 >
-                  {selectedPrice ? "Update" : "Submit"}
+                  {selectedPrice ? "Submit" : "Submit"}
                 </Button>
                 {loading && <CustomLoader />}
               </form>

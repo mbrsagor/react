@@ -8,6 +8,7 @@ import DocumentScannerOutlinedIcon from "@mui/icons-material/DocumentScannerOutl
 import axios from "../../../services/axiosConfig";
 import ToolsBar from "../../../components/tools_bar";
 import { GuardAssignEvents } from "../../../services/api_service";
+import DefaultThumbnail from "../../../assets/DefaultThumbnail.jpg";
 
 export default function AssignEvent() {
   // Model
@@ -45,7 +46,7 @@ export default function AssignEvent() {
             {events && events.length > 0 ? (
               events.map((event, index) => (
                 <Box key={index} className="single_assign_event">
-                  <img src={event.event.thumbnail} alt={event.event.title} />
+                  <img src={event.event.thumbnail || DefaultThumbnail} alt={event.event.title} />
                   <Box className="event_content">
                     <Typography className="event_title" variant="h5">
                       {event.event.title}
